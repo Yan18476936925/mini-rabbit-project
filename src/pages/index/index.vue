@@ -1,15 +1,14 @@
 <template>
-  <view>
-    
+  <view> 
+    <Navbar></Navbar>
   </view>
 </template>
 
 <script>
-import http from "@/utils/http.js";
+import Navbar from "./components/Navbar.vue";
 export default {
-  async onLoad() {
-    const result = await http({url:"/home/oneStop/mutli"});
-    console.log('----->12', result);
+  components:{
+    Navbar,
   }
 };
 </script>
