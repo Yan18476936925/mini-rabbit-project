@@ -1,6 +1,6 @@
 <template>
   <!-- 导航条 -->
-  <view class="navbar" :style="{ paddingTop: paddingTop + 'px' }">
+  <view class="navbar" :style="{ paddingTop: safeArea.top + 'px' }">
     <!-- 文字logo -->
     <view class="logo">
       <image src="http://static.botue.com/erabbit/static/images/logo.png" ></image>
@@ -15,14 +15,13 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
-  data () {
-    return {
-      paddingTop:0,
-    }
+  computed: {
+    ...mapState(["safeArea"])
   },
-  created () {
-    console.log('----->',123);
+  created(){
+    console.log(this.$store);
   }
 };
 </script>
