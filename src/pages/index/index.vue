@@ -1,47 +1,29 @@
 <template>
-  <view class="content">
-    <image class="logo" src="/static/logo.png"></image>
-    <view>
-      <text class="title">{{ title }}</text>
-    </view>
+  <view>
+    <view>{{text}}</view>
+    <view>{{this.$store.state.text}}</view>
+    <button @click="handleTap">修改</button>
   </view>
 </template>
 
 <script>
 export default {
-  data() {
-    return {
-      title: "Hello",
-    };
+  computed: {
+    text(){
+      return this.$store.state.text
+    }
   },
   onLoad() {
     console.log("----->18", this.$store.state.text);
   },
-  methods: {},
+  methods: {
+    handleTap() {
+      console.log("----->21", Date.now());
+      this.$store.commit('setText',Date.now())
+    },
+  },
 };
 </script>
 
-<style>
-.content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  height: 200rpx;
-  width: 200rpx;
-  margin: 200rpx auto 50rpx auto;
-}
-
-.text-area {
-  display: flex;
-  justify-content: center;
-}
-
-.title {
-  font-size: 36rpx;
-  color: #8f8f94;
-}
+<style scoped>
 </style>
