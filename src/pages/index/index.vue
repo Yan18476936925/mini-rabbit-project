@@ -3,6 +3,8 @@
     <Navbar></Navbar>
     <!-- 广告区域 -->
     <Carousel :banners="banners" height="280rpx"></Carousel>
+    <!-- 前台类目 -->
+    <CateScroll :HomeCategoryHeadMutli="HomeCategoryHeadMutli"></CateScroll>
   </view>
 </template>
 
@@ -10,21 +12,27 @@
 // 引入 自定义导航栏 组件
 import Navbar from "./components/Navbar.vue";
 // 引入 封装好发送请求的代码
-import { getHomeBanner } from "@/http/home";
+import { getHomeBanner, getHomeCategoryHeadMutli } from "@/http/home";
 export default {
   components:{
     Navbar,
   },
   data() {
     return {
-      // 首页-广告区域
+      // 广告区域
       banners: [],
+      // 前台类目
+      HomeCategoryHeadMutli:[]
     };
   },
   async onLoad() {
+    // 获取广告轮播图
     const result = await getHomeBanner();
-    console.log('----->24',result);
     this.banners = result.result;
+    // 获取前台类目
+    const result2 = await getHomeCategoryHeadMutli();
+    console.log('----->32', result2);
+    this.HomeCategoryHeadMutli = result2.result
   },
 };
 </script>

@@ -5,9 +5,14 @@ import http from "@/utils/http";
  * @param {Number} distributionSite 要获取 首页的数据-1 还是 分类页面的数据-2
  * @returns Object
  */
+// 首页-广告轮播图
 export const getHomeBanner = (distributionSite = 1) => {
   return http({
     url: "/home/banner",
     data: { distributionSite },
   });
+};
+// 首页-前台类目-小程序
+export const getHomeCategoryHeadMutli = () => {
+  return http({ url: "/home/category/head/mutli" });
 };

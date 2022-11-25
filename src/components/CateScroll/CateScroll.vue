@@ -3,7 +3,7 @@
     <scroll-view scroll-x @scroll="handleCategory">
       <view class="scroll-wrap">
         <view class="category-head-mutli-item">
-          <navigator v-for="item in categoryHeadMutli" :key="item.id">
+          <navigator v-for="item in HomeCategoryHeadMutli" :key="item.id">
             <image mode="widthFix" :src="item.icon"></image>
             <text>{{ item.name }}</text>
           </navigator>
@@ -21,7 +21,7 @@
 
 <script>
 export default {
-  props: ["categoryHeadMutli"],
+  props: ["HomeCategoryHeadMutli"],
   data() {
     return {
       scrollLeft: 0,
@@ -29,7 +29,6 @@ export default {
   },
   methods: {
     handleCategory(e) {
-      xxxxxxxxxxxxxx;
     },
   },
 };
