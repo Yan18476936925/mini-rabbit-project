@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapState } from "vuex";
 export default {
   props: ["HomeCategoryHeadMutli"],
   data() {
@@ -27,8 +28,23 @@ export default {
       scrollLeft: 0,
     };
   },
+  computed: {
+    ...mapState(["safeArea"]),
+  },
   methods: {
     handleCategory(e) {
+      // 获取当前滚动的距离  scrollLeft
+      // 将 scrollLeft 和  一个屏幕的宽度  除法运算，来获得 对应百分比
+      // 把百分比 设置 给 滑块   transform:translateX()      translateX 写百分比单位的话 相对于自身的宽度
+      const scrollLeft = e.detail.scrollLeft
+      console.log('----->scrollLeft',scrollLeft);
+       // 知道我们当前的屏幕有多宽
+      const screenWidth = this.safeArea.width;
+      console.log('----->screenWidth',screenWidth);
+      //  // 获取 对应滑动的比例
+      const rate = (scrollLeft / screenWidth) * 100 + "%";
+      // // 设置变量
+      this.scrollLeft = rate;
     },
   },
 };

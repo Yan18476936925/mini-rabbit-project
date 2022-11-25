@@ -16,3 +16,7 @@ export const getHomeBanner = (distributionSite = 1) => {
 export const getHomeCategoryHeadMutli = () => {
   return http({ url: "/home/category/head/mutli" });
 };
+// 首页-人气推荐-小程序和app
+export const getHomeHotMutli = () => {
+  return http({ url: "/home/hot/mutli" });
+};

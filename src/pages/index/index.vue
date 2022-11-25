@@ -5,6 +5,17 @@
     <Carousel :banners="banners" height="280rpx"></Carousel>
     <!-- 前台类目 -->
     <CateScroll :HomeCategoryHeadMutli="HomeCategoryHeadMutli"></CateScroll>
+    <!-- 人气推荐 -->
+    <view class="panel recommend">
+      <view class="item" v-for="item in hotMutli" :key="item.id">
+        <view class="title">
+          {{ item.title }}<text>{{ item.alt }}</text>
+        </view>
+        <navigator hover-class="none" :url="`/pages/recommend/index?type=${item.type}`" class="cards" >
+          <image mode="aspectFit" v-for="img in item.pictures" :key="img" :src="img" ></image>
+        </navigator>
+      </view>
+    </view>
   </view>
 </template>
 
@@ -12,7 +23,7 @@
 // 引入 自定义导航栏 组件
 import Navbar from "./components/Navbar.vue";
 // 引入 封装好发送请求的代码
-import { getHomeBanner, getHomeCategoryHeadMutli } from "@/http/home";
+import { getHomeBanner, getHomeCategoryHeadMutli,getHomeHotMutli } from "@/http/home";
 export default {
   components:{
     Navbar,
@@ -22,7 +33,9 @@ export default {
       // 广告区域
       banners: [],
       // 前台类目
-      HomeCategoryHeadMutli:[]
+      HomeCategoryHeadMutli:[],
+      // 前台类目
+      hotMutli:[],
     };
   },
   async onLoad() {
@@ -33,6 +46,10 @@ export default {
     const result2 = await getHomeCategoryHeadMutli();
     console.log('----->32', result2);
     this.HomeCategoryHeadMutli = result2.result
+    // 获取人气推荐
+    const result3 = await getHomeHotMutli();
+    console.log('----->51', result3);
+    this.hotMutli = result3.result
   },
 };
 </script>
