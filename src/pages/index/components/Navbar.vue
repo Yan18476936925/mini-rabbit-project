@@ -20,9 +20,6 @@ export default {
   computed: {
     ...mapState(["safeArea"])
   },
-  created(){
-    console.log(this.$store);
-  }
 };
 </script>
 
