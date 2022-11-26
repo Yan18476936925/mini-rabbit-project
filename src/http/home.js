@@ -21,10 +21,6 @@ export const getHomeHotMutli = () => {
   return http({ url: "/home/hot/mutli" });
 };
 // 首页-新鲜好物
-// export const getHomeNew = (limit = 4) => {
-//   return http({ url: "/home/new", data: { limit } });
-// };
-// 首页-新鲜好物
 // limit：默认值为4，指定响应数据中商品的数量
 export const getHomeNew = (data) => {
   return http({ 

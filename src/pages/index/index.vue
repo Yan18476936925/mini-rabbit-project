@@ -2,7 +2,7 @@
   <view class="content">
     <!-- 导航组件 -->
     <Navbar></Navbar>
-    <scroll-view scroll-y class="main">
+    <scroll-view scroll-y class="main" @scrolltolower="onScrolltolower">
       <!-- 广告区域 -->
       <Carousel :banners="banners" height="280rpx"></Carousel>
       <!-- 前台类目 -->
@@ -96,6 +96,8 @@
           </navigator>
         </view>
       </view>
+      <!-- 猜你喜欢 -->
+      <Guess :homeGoodsGuessLike="goodsGuesslike"></Guess>
     </scroll-view>
   </view>
 </template>
@@ -109,7 +111,7 @@ import {
   getHomeCategoryHeadMutli,
   getHomeHotMutli,
   getHomeNew,
-  getHomeGoodsGuesslike
+  getHomeGoodsGuesslike,
 } from "@/http/home";
 export default {
   components: {
@@ -127,9 +129,15 @@ export default {
       homeNew: [],
       // 猜你喜欢参数
       guessParams: {
-        page:1,
-        pageSize:10,
+        page: 1,
+        pageSize: 50,
       },
+      // 猜你喜欢列表
+      goodsGuesslike: [],
+      // 猜你喜欢总页数
+      guessTotalPages: 0,
+      // 有没有猜你喜欢 下一页数据
+      hasMore:true
     };
   },
   async onLoad() {
@@ -144,11 +152,36 @@ export default {
     this.hotMutli = result3.result;
     // 获取新鲜好物
     const result4 = await getHomeNew({ limit: 4 });
-    // console.log("----->获取新鲜好物", result4);
     this.homeNew = result4.result;
     // 获取猜你喜欢
-    const result5 = await getHomeGoodsGuesslike(this.guessLike);
+    const result5 = await getHomeGoodsGuesslike(this.guessParams);
     console.log("----->获取猜你喜欢", result5);
+    // 赋值给猜你喜欢列表
+    this.goodsGuesslike = result5.result.items;
+    // 赋值给猜你喜欢总页数
+    this.guessTotalPages = result5.result.pages;
+  },
+  methods: {
+    async onScrolltolower() {
+      // 判断当前的页数是否大于等于总条数
+      if (this.guessParams.page >= this.guessTotalPages) {
+        // 提示没有一下页
+        uni.showToast({
+          title:'没有更多数据了',
+          icon:'none'
+        });
+        // 关闭加载没有更多数据
+        this.hasMore = false
+      }else{
+        // 当前页数++
+        this.guessParams.page++;
+        // 获取列表更新数据
+        const result = await getHomeGoodsGuesslike(this.guessParams);
+        console.log("----->获取列表更新数据", result);
+        // 将列表数据拼接当前列表数据
+        this.goodsGuesslike = [...this.goodsGuesslike,...result.result.items]
+      }
+    },
   },
 };
 </script>

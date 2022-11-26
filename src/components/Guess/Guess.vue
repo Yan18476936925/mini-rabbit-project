@@ -22,7 +22,7 @@
     <!-- 没有更多数据了 -->
     <view
       class="loading"
-      v-if="homeGoodsGuessLikeTotal !== homeGoodsGuessLike.length"
+      v-if="hasMore"
       >正在加载...</view
     >
   </view>
@@ -30,7 +30,7 @@
 
 <script>
 export default {
-  props: ["homeGoodsGuessLike", "homeGoodsGuessLikeTotal"],
+  props: ["homeGoodsGuessLike", "hasMore"],
 };
 </script>
 
