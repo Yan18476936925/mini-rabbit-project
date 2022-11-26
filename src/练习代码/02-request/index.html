@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      function request(options) {
+        // 对 header 做处理 ， 只需要为 请求头 添加一个属性 对应的值
+        // 方式一
+        // options.header.souceClient = "mini";
+        //  方式二
+        options.header = {
+          ...options.header,
+          souceClient: "mini",
+        };
+        console.log(options);
+      }
+      request({
+        header: {
+          a: 1,
+          b: 2,
+        },
+      });
+    </script>
+  </body>
+</html>

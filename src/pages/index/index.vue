@@ -53,6 +53,49 @@
           </navigator>
         </view>
       </view>
+      <!-- 热门品牌 -->
+      <view class="panel brands">
+        <view class="title">
+          热门品牌
+          <navigator hover-class="none" class="more" url="/pages/list/index"
+            >更多</navigator
+          >
+        </view>
+        <view class="cards">
+          <navigator hover-class="none" url="/pages/goods/index">
+            <image
+              mode="aspectFit"
+              src="http://static.botue.com/erabbit/static/uploads/brand_logo_1.jpg"
+            ></image>
+            <view class="name">小米</view>
+            <view class="price">99元起</view>
+          </navigator>
+          <navigator hover-class="none" url="/pages/goods/index">
+            <image
+              mode="aspectFit"
+              src="http://static.botue.com/erabbit/static/uploads/brand_logo_2.jpg"
+            ></image>
+            <view class="name">TCL</view>
+            <view class="price">199起</view>
+          </navigator>
+          <navigator hover-class="none" url="/pages/goods/index">
+            <image
+              mode="aspectFit"
+              src="http://static.botue.com/erabbit/static/uploads/brand_logo_3.jpg"
+            ></image>
+            <view class="name">饭小宝</view>
+            <view class="price">9.9起</view>
+          </navigator>
+          <navigator hover-class="none" url="/pages/goods/index">
+            <image
+              mode="aspectFit"
+              src="http://static.botue.com/erabbit/static/uploads/brand_logo_4.jpg"
+            ></image>
+            <view class="name">鳄鱼</view>
+            <view class="price">299起</view>
+          </navigator>
+        </view>
+      </view>
     </scroll-view>
   </view>
 </template>
@@ -80,7 +123,7 @@ export default {
       // 人气推荐
       hotMutli: [],
       // 新鲜好物
-      homeNew: []
+      homeNew: [],
     };
   },
   async onLoad() {
@@ -96,7 +139,7 @@ export default {
     // 获取新鲜好物
     const result4 = await getHomeNew({ limit: 4 });
     console.log("----->70", result4);
-    this.homeNew  = result4.result
+    this.homeNew = result4.result;
   },
 };
 </script>

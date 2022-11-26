@@ -25,6 +25,7 @@ const request = {
       ...args.header, // 保留原本的header
       "source-client": "miniapp", // 添加小程序端调用标识--给后端判断使用！！
     };
+    // console.log('----->28',args);
   },
   // 完成后
   complete(res) {
