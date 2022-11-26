@@ -35,3 +35,10 @@ export const getHomeGoodsGuesslike = (data) => {
     data
   });
 };
+// 统一获取推荐页面用到数据
+export const getHomeRecommend = (url,data={}) => {
+  return http({ 
+    url,
+    data
+  });
+};
