@@ -2,7 +2,14 @@
   <view class="content">
     <!-- 导航组件 -->
     <Navbar></Navbar>
-    <scroll-view scroll-y class="main" @scrolltolower="onScrolltolower" refresher-enabled @refresherrefresh="onRefresherrefresh" :refresher-triggered="refresherTriggered">
+    <scroll-view
+      scroll-y
+      class="main"
+      @scrolltolower="onScrolltolower"
+      refresher-enabled
+      @refresherrefresh="onRefresherrefresh"
+      :refresher-triggered="refresherTriggered"
+    >
       <!-- 广告区域 -->
       <Carousel :banners="banners" height="280rpx"></Carousel>
       <!-- 前台类目 -->
@@ -132,7 +139,7 @@ export default {
       // 有没有猜你喜欢 下一页数据
       hasMore: true,
       // 控制下拉刷新的状态
-      refresherTriggered: false
+      refresherTriggered: false,
     };
   },
   onLoad() {
@@ -140,23 +147,7 @@ export default {
     this.loadData();
   },
   methods: {
-    loadData(){
-      // 获取广告轮播图
-      getHomeBanner().then(result=>{
-        this.banners = result.result;
-      })
-      // 获取前台类目
-      getHomeCategoryHeadMutli().then(result=>{
-        this.HomeCategoryHeadMutli = result.result;
-      })
-      // 获取人气推荐
-      getHomeHotMutli().then(result=>{
-        this.hotMutli = result.result;
-      })
-      // 获取新鲜好物
-      getHomeNew({ limit: 4 }).then(result=>{
-        this.homeNew = result.result;
-      })
+    loadData() {
       // 猜你喜欢参数
       this.guessParams = {
         page: 1,
@@ -164,15 +155,54 @@ export default {
       };
       // 猜你喜欢总页数
       this.guessTotalPages = 0;
-      // 获取猜你喜欢
-      getHomeGoodsGuesslike(this.guessParams).then(result=>{
-        console.log("----->获取猜你喜欢", result);
-        // 赋值给猜你喜欢列表
-        this.goodsGuesslike = result.result.items;
-        // 赋值给猜你喜欢总页数
-        this.guessTotalPages = result.result.pages;
-      })
+      // 下面这段代码也是两个函数同时执行，各自请求成功，各自完成赋值 不存在 函数1 等待函数2执行 情况！！！
+      return Promise.all([
+        this.getHomeBanner(), 
+        this.getHomeCategoryHeadMutli(),
+        this.getHomeHotMutli(),
+        this.getHomeNew(),
+        this.getHomeGoodsGuesslike(this.guessParams),
+      ]);
+      // 1 同时调用 两个 函数 getHomeBanner  和  getHomeCategoryHeadMutli
+      // 2 函数内部发送请求 ， 把请求的结果 设置到data
+      // 3 两个函数的代码都执行完毕了，会触发  Promise.all().then
     },
+    // 获取广告轮播图
+    async getHomeBanner() {
+      // 只要一个函数 拿async去做修饰，那么函数的返回值 就会自动的变成promise
+      const result = await getHomeBanner();
+      this.banners = result.result;
+      console.log('----->2');
+    },
+    // 获取前台类目
+    async getHomeCategoryHeadMutli() {
+      const result = await getHomeCategoryHeadMutli();
+      this.HomeCategoryHeadMutli = result.result;
+      console.log('----->3');
+    },
+    // 获取人气推荐
+    async getHomeHotMutli() {
+      const result = await getHomeHotMutli();
+      this.hotMutli = result.result;
+      console.log('----->4');
+    },
+    // 获取新鲜好物
+    async getHomeNew() {
+      const result = await getHomeNew();
+      this.homeNew = result.result;
+      console.log('----->5');
+    },
+    // 获取猜你喜欢
+    async getHomeGoodsGuesslike(params) {
+      const result = await getHomeGoodsGuesslike(params);
+      console.log("----->获取猜你喜欢", result);
+      // 赋值给猜你喜欢列表
+      this.goodsGuesslike = result.result.items;
+      // 赋值给猜你喜欢总页数
+      this.guessTotalPages = result.result.pages;
+      console.log('----->6');
+    },
+
     async onScrolltolower() {
       // 判断当前的页数是否大于等于总条数
       if (this.guessParams.page >= this.guessTotalPages) {
@@ -194,15 +224,31 @@ export default {
       }
     },
     // 下拉刷新
-    onRefresherrefresh(){
-      console.log('----->下拉刷新');
+    async onRefresherrefresh() {
       // 设置下拉刷新状态显示
-      this.refresherTriggered = true
-      setTimeout(() => {
-        // 数据回来关闭
-        this.refresherTriggered = false
-      }, 1000);
-    }
+      this.refresherTriggered = true;
+      // 广告区域
+      this.banners= [];
+      // 前台类目
+      this.HomeCategoryHeadMutli= [];
+      // 人气推荐
+      this.hotMutli= [];
+      // 新鲜好物
+      this.homeNew= [];
+      // 猜你喜欢列表
+      this.goodsGuesslike= [];
+      // 有没有猜你喜欢 下一页数据
+      this.hasMore= true  
+      this.guessParams.page = 1;
+      this.guessTotalPages = 1;
+      
+      console.log('----->1');
+      await this.loadData();
+      console.log('----->7');
+
+      // 数据回来关闭
+      this.refresherTriggered = false;
+    },
   },
 };
 </script>
