@@ -1,21 +1,59 @@
 <template>
-  <view> 
+  <view class="content">
+    <!-- 导航组件 -->
     <Navbar></Navbar>
-    <!-- 广告区域 -->
-    <Carousel :banners="banners" height="280rpx"></Carousel>
-    <!-- 前台类目 -->
-    <CateScroll :HomeCategoryHeadMutli="HomeCategoryHeadMutli"></CateScroll>
-    <!-- 人气推荐 -->
-    <view class="panel recommend">
-      <view class="item" v-for="item in hotMutli" :key="item.id">
-        <view class="title">
-          {{ item.title }}<text>{{ item.alt }}</text>
+    <scroll-view scroll-y class="main">
+      <!-- 广告区域 -->
+      <Carousel :banners="banners" height="280rpx"></Carousel>
+      <!-- 前台类目 -->
+      <CateScroll :HomeCategoryHeadMutli="HomeCategoryHeadMutli"></CateScroll>
+      <!-- 人气推荐 -->
+      <view class="panel recommend">
+        <view class="item" v-for="item in hotMutli" :key="item.id">
+          <view class="title">
+            {{ item.title }}<text>{{ item.alt }}</text>
+          </view>
+          <navigator
+            hover-class="none"
+            :url="`/pages/recommend/index?type=${item.type}`"
+            class="cards"
+          >
+            <image
+              mode="aspectFit"
+              v-for="img in item.pictures"
+              :key="img"
+              :src="img"
+            ></image>
+          </navigator>
         </view>
-        <navigator hover-class="none" :url="`/pages/recommend/index?type=${item.type}`" class="cards" >
-          <image mode="aspectFit" v-for="img in item.pictures" :key="img" :src="img" ></image>
-        </navigator>
       </view>
-    </view>
+      <!-- 新鲜好物 -->
+      <view class="panel fresh">
+        <view class="title">
+          新鲜好物
+          <navigator
+            hover-class="none"
+            class="more"
+            url="/pages/recommend/index?type=5"
+            >更多</navigator
+          >
+        </view>
+        <view class="cards">
+          <navigator
+            hover-class="none"
+            :url="`/pages/goods/index?id=${item.id}`"
+            v-for="item in homeNew"
+            :key="item.id"
+          >
+            <image mode="aspectFit" :src="item.picture"></image>
+            <view class="name">{{ item.name }}</view>
+            <view class="price">
+              <text class="small">¥</text>{{ item.price }}
+            </view>
+          </navigator>
+        </view>
+      </view>
+    </scroll-view>
   </view>
 </template>
 
@@ -23,9 +61,14 @@
 // 引入 自定义导航栏 组件
 import Navbar from "./components/Navbar.vue";
 // 引入 封装好发送请求的代码
-import { getHomeBanner, getHomeCategoryHeadMutli,getHomeHotMutli } from "@/http/home";
+import {
+  getHomeBanner,
+  getHomeCategoryHeadMutli,
+  getHomeHotMutli,
+  getHomeNew,
+} from "@/http/home";
 export default {
-  components:{
+  components: {
     Navbar,
   },
   data() {
@@ -33,9 +76,11 @@ export default {
       // 广告区域
       banners: [],
       // 前台类目
-      HomeCategoryHeadMutli:[],
-      // 前台类目
-      hotMutli:[],
+      HomeCategoryHeadMutli: [],
+      // 人气推荐
+      hotMutli: [],
+      // 新鲜好物
+      homeNew: []
     };
   },
   async onLoad() {
@@ -44,12 +89,14 @@ export default {
     this.banners = result.result;
     // 获取前台类目
     const result2 = await getHomeCategoryHeadMutli();
-    console.log('----->32', result2);
-    this.HomeCategoryHeadMutli = result2.result
+    this.HomeCategoryHeadMutli = result2.result;
     // 获取人气推荐
     const result3 = await getHomeHotMutli();
-    console.log('----->51', result3);
-    this.hotMutli = result3.result
+    this.hotMutli = result3.result;
+    // 获取新鲜好物
+    const result4 = await getHomeNew({ limit: 4 });
+    console.log("----->70", result4);
+    this.homeNew  = result4.result
   },
 };
 </script>
