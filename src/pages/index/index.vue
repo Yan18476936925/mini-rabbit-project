@@ -127,47 +127,44 @@ export default {
       hotMutli: [],
       // 新鲜好物
       homeNew: [],
-      // // 猜你喜欢参数
-      // guessParams: {
-      //   page: 1,
-      //   pageSize: 10,
-      // },
-      // // 猜你喜欢总页数
-      // guessTotalPages: 0,
       // 猜你喜欢列表
       goodsGuesslike: [],
       // 有没有猜你喜欢 下一页数据
       hasMore: true,
     };
   },
-  async onLoad() {
+  onLoad() {
     // 获取广告轮播图
-    const result = await getHomeBanner();
-    this.banners = result.result;
+    getHomeBanner().then(result=>{
+      this.banners = result.result;
+    })
     // 获取前台类目
-    const result2 = await getHomeCategoryHeadMutli();
-    this.HomeCategoryHeadMutli = result2.result;
+    getHomeCategoryHeadMutli().then(result=>{
+      this.HomeCategoryHeadMutli = result.result;
+    })
     // 获取人气推荐
-    const result3 = await getHomeHotMutli();
-    this.hotMutli = result3.result;
+    getHomeHotMutli().then(result=>{
+      this.hotMutli = result.result;
+    })
     // 获取新鲜好物
-    const result4 = await getHomeNew({ limit: 4 });
-    this.homeNew = result4.result;
-    
+    getHomeNew({ limit: 4 }).then(result=>{
+      this.homeNew = result.result;
+    })
     // 猜你喜欢参数
     this.guessParams = {
       page: 1,
-      pageSize: 10,
+      pageSize: 50,
     };
     // 猜你喜欢总页数
     this.guessTotalPages = 0;
     // 获取猜你喜欢
-    const result5 = await getHomeGoodsGuesslike(this.guessParams);
-    console.log("----->获取猜你喜欢", result5);
-    // 赋值给猜你喜欢列表
-    this.goodsGuesslike = result5.result.items;
-    // 赋值给猜你喜欢总页数
-    this.guessTotalPages = result5.result.pages;
+    getHomeGoodsGuesslike(this.guessParams).then(result=>{
+      console.log("----->获取猜你喜欢", result);
+      // 赋值给猜你喜欢列表
+      this.goodsGuesslike = result.result.items;
+      // 赋值给猜你喜欢总页数
+      this.guessTotalPages = result.result.pages;
+    })
   },
   methods: {
     async onScrolltolower() {
