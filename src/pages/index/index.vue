@@ -127,17 +127,17 @@ export default {
       hotMutli: [],
       // 新鲜好物
       homeNew: [],
-      // 猜你喜欢参数
-      guessParams: {
-        page: 1,
-        pageSize: 50,
-      },
+      // // 猜你喜欢参数
+      // guessParams: {
+      //   page: 1,
+      //   pageSize: 10,
+      // },
+      // // 猜你喜欢总页数
+      // guessTotalPages: 0,
       // 猜你喜欢列表
       goodsGuesslike: [],
-      // 猜你喜欢总页数
-      guessTotalPages: 0,
       // 有没有猜你喜欢 下一页数据
-      hasMore:true
+      hasMore: true,
     };
   },
   async onLoad() {
@@ -153,6 +153,14 @@ export default {
     // 获取新鲜好物
     const result4 = await getHomeNew({ limit: 4 });
     this.homeNew = result4.result;
+    
+    // 猜你喜欢参数
+    this.guessParams = {
+      page: 1,
+      pageSize: 10,
+    };
+    // 猜你喜欢总页数
+    this.guessTotalPages = 0;
     // 获取猜你喜欢
     const result5 = await getHomeGoodsGuesslike(this.guessParams);
     console.log("----->获取猜你喜欢", result5);
@@ -167,19 +175,19 @@ export default {
       if (this.guessParams.page >= this.guessTotalPages) {
         // 提示没有一下页
         uni.showToast({
-          title:'没有更多数据了',
-          icon:'none'
+          title: "没有更多数据了",
+          icon: "none",
         });
         // 关闭加载没有更多数据
-        this.hasMore = false
-      }else{
+        this.hasMore = false;
+      } else {
         // 当前页数++
         this.guessParams.page++;
         // 获取列表更新数据
         const result = await getHomeGoodsGuesslike(this.guessParams);
         console.log("----->获取列表更新数据", result);
         // 将列表数据拼接当前列表数据
-        this.goodsGuesslike = [...this.goodsGuesslike,...result.result.items]
+        this.goodsGuesslike = [...this.goodsGuesslike, ...result.result.items];
       }
     },
   },

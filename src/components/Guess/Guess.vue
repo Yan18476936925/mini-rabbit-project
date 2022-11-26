@@ -20,12 +20,7 @@
       </navigator>
     </view>
     <!-- 没有更多数据了 -->
-    <view
-      class="loading"
-      v-if="hasMore"
-      >正在加载...</view
-    >
-  </view>
+    <view class="loading" v-if="hasMore" >正在加载...</view > </view>
 </template>
 
 <script>
