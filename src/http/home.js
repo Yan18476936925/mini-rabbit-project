@@ -32,3 +32,10 @@ export const getHomeNew = (data) => {
     data
   });
 };
+// 首页-猜你喜欢
+export const getHomeGoodsGuesslike = (data) => {
+  return http({ 
+    url: "/home/goods/guessLike",
+    data
+  });
+};

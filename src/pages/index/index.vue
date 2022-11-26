@@ -109,6 +109,7 @@ import {
   getHomeCategoryHeadMutli,
   getHomeHotMutli,
   getHomeNew,
+  getHomeGoodsGuesslike
 } from "@/http/home";
 export default {
   components: {
@@ -124,6 +125,11 @@ export default {
       hotMutli: [],
       // 新鲜好物
       homeNew: [],
+      // 猜你喜欢参数
+      guessParams: {
+        page:1,
+        pageSize:10,
+      },
     };
   },
   async onLoad() {
@@ -138,8 +144,11 @@ export default {
     this.hotMutli = result3.result;
     // 获取新鲜好物
     const result4 = await getHomeNew({ limit: 4 });
-    console.log("----->70", result4);
+    // console.log("----->获取新鲜好物", result4);
     this.homeNew = result4.result;
+    // 获取猜你喜欢
+    const result5 = await getHomeGoodsGuesslike(this.guessLike);
+    console.log("----->获取猜你喜欢", result5);
   },
 };
 </script>
