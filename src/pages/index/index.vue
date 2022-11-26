@@ -134,39 +134,43 @@ export default {
     };
   },
   onLoad() {
-    // 获取广告轮播图
-    getHomeBanner().then(result=>{
-      this.banners = result.result;
-    })
-    // 获取前台类目
-    getHomeCategoryHeadMutli().then(result=>{
-      this.HomeCategoryHeadMutli = result.result;
-    })
-    // 获取人气推荐
-    getHomeHotMutli().then(result=>{
-      this.hotMutli = result.result;
-    })
-    // 获取新鲜好物
-    getHomeNew({ limit: 4 }).then(result=>{
-      this.homeNew = result.result;
-    })
-    // 猜你喜欢参数
-    this.guessParams = {
-      page: 1,
-      pageSize: 50,
-    };
-    // 猜你喜欢总页数
-    this.guessTotalPages = 0;
-    // 获取猜你喜欢
-    getHomeGoodsGuesslike(this.guessParams).then(result=>{
-      console.log("----->获取猜你喜欢", result);
-      // 赋值给猜你喜欢列表
-      this.goodsGuesslike = result.result.items;
-      // 赋值给猜你喜欢总页数
-      this.guessTotalPages = result.result.pages;
-    })
+    // 调用渲染列表
+    this.loadData();
   },
   methods: {
+    loadData(){
+      // 获取广告轮播图
+      getHomeBanner().then(result=>{
+        this.banners = result.result;
+      })
+      // 获取前台类目
+      getHomeCategoryHeadMutli().then(result=>{
+        this.HomeCategoryHeadMutli = result.result;
+      })
+      // 获取人气推荐
+      getHomeHotMutli().then(result=>{
+        this.hotMutli = result.result;
+      })
+      // 获取新鲜好物
+      getHomeNew({ limit: 4 }).then(result=>{
+        this.homeNew = result.result;
+      })
+      // 猜你喜欢参数
+      this.guessParams = {
+        page: 1,
+        pageSize: 50,
+      };
+      // 猜你喜欢总页数
+      this.guessTotalPages = 0;
+      // 获取猜你喜欢
+      getHomeGoodsGuesslike(this.guessParams).then(result=>{
+        console.log("----->获取猜你喜欢", result);
+        // 赋值给猜你喜欢列表
+        this.goodsGuesslike = result.result.items;
+        // 赋值给猜你喜欢总页数
+        this.guessTotalPages = result.result.pages;
+      })
+    },
     async onScrolltolower() {
       // 判断当前的页数是否大于等于总条数
       if (this.guessParams.page >= this.guessTotalPages) {
