@@ -1,13 +1,39 @@
 <template>
-  <view>
-    recommend
+  <view class="viewport">
+    <!-- 推荐封面 -->
+    <view class="cover">
+      <image :src="bannerPicture"></image>
+    </view>
+    <!-- tab栏 -->
+    <view class="tabs">
+      <text
+        class="text"
+        v-for="(item, index) in recommendList"
+        :key="index"
+        :class="{ active: index === activeIndex }"
+        @tap="activeIndex=index"
+      >
+        {{ item.subTypes.title }}
+      </text>
+    </view>
+    <!-- 列表内容 -->
   </view>
 </template>
 
 <script>
 import { getHomeRecommend } from "@/http/home.js";
 export default {
-  async onLoad({type}) {
+  data() {
+    return {
+      // 背景大图
+      bannerPicture: "",
+      // 当前显示的tab栏
+      activeIndex: 0,
+      // 列表数据
+      recommendList: [],
+    };
+  },
+  async onLoad({ type }) {
     // 存放页面标题 和 获取数据的url
     const urlMap = {
       1: { title: "特惠推荐", url: "/home/preference/mutli" },
@@ -18,13 +44,23 @@ export default {
     };
     // 获取当前type对应的数据
     const currentInfo = urlMap[type];
-    console.log('----->currentInfo',currentInfo);
+    console.log("21----->currentInfo", currentInfo);
     // 动态的设置 页面的标题
-    uni.setNavigationBarTitle({title:currentInfo.title});
+    uni.setNavigationBarTitle({ title: currentInfo.title });
     // 发送请求获取对应的数据
     const result = await getHomeRecommend(currentInfo.url);
-    console.log('----->26', result);
-  }
+    console.log("26----->getHomeRecommend", result);
+    // 赋值背景大图
+    this.bannerPicture = result.result.bannerPicture;
+    // 赋值构造数据列表
+    this.recommendList = result.result.subTypes.map((item)=>{
+      return {
+        // tab栏要的数据 构造好
+        subTypes: item,
+      }
+    })
+    console.log('----->61',this.recommendList);
+  },
 };
 </script>
 <style lang="scss">
