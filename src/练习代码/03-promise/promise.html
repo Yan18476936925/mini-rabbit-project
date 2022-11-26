@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <script>
+      /* 
+    Promise.all 方法  接收一个数组， 数组中 存放 元素  要一个 promise对象 
+    等待 数组中每一个 promise 都变成 完成 的状态，  
+    Promise.all()
+    .then  才会触发 
+     */
+      Promise.all([fn1(), fn2(), fn3()]).then((resultList) => {
+        // 会等待 三个请求 都完成了  才会触发
+        // resultList 等于 fn1 、fn2、fn3 请求回来的数据  所组成的数组
+        console.log(resultList);
+      });
+      function fn1() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(1);
+          }, 1000);
+        });
+      }
+      function fn2() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(2);
+          }, 2000);
+        });
+      }
+      function fn3() {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            resolve(3);
+          }, 3000);
+        });
+      }
+    </script>
+  </body>
+</html>

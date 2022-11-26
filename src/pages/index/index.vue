@@ -2,7 +2,7 @@
   <view class="content">
     <!-- 导航组件 -->
     <Navbar></Navbar>
-    <scroll-view scroll-y class="main" @scrolltolower="onScrolltolower">
+    <scroll-view scroll-y class="main" @scrolltolower="onScrolltolower" refresher-enabled @refresherrefresh="onRefresherrefresh" :refresher-triggered="refresherTriggered">
       <!-- 广告区域 -->
       <Carousel :banners="banners" height="280rpx"></Carousel>
       <!-- 前台类目 -->
@@ -131,6 +131,8 @@ export default {
       goodsGuesslike: [],
       // 有没有猜你喜欢 下一页数据
       hasMore: true,
+      // 控制下拉刷新的状态
+      refresherTriggered: false
     };
   },
   onLoad() {
@@ -191,6 +193,16 @@ export default {
         this.goodsGuesslike = [...this.goodsGuesslike, ...result.result.items];
       }
     },
+    // 下拉刷新
+    onRefresherrefresh(){
+      console.log('----->下拉刷新');
+      // 设置下拉刷新状态显示
+      this.refresherTriggered = true
+      setTimeout(() => {
+        // 数据回来关闭
+        this.refresherTriggered = false
+      }, 1000);
+    }
   },
 };
 </script>
