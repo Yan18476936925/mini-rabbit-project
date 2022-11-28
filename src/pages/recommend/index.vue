@@ -70,7 +70,6 @@ export default {
     };
     // 获取当前type对应的数据 将currentInfo设置成一个全局变量
     this.currentInfo = urlMap[type];
-    // console.log("21----->currentInfo", currentInfo);
     // 动态的设置 页面的标题
     uni.setNavigationBarTitle({ title: this.currentInfo.title });
     // 发送请求获取对应的数据
@@ -90,7 +89,7 @@ export default {
         goodsItems: value,
       };
     });
-    console.log("26----->列表", this.recommendList);
+    // console.log("26----->列表", this.recommendList);
   },
   methods: {
     // 滚动条触底事件
@@ -112,7 +111,7 @@ export default {
       }
       // 重新发送请求获取列表
       const result = await getHomeRecommend(this.currentInfo.url,data);
-      console.log("115----->getHomeRecommend", result);
+      // console.log("115----->getHomeRecommend", result);
       // 实现 新旧数据的合并
       // 获取新数据对应的goodsItems对象
       const newGoodsItems = result.result.goodsItems[currentShow.subTypes.id]
