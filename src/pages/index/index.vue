@@ -154,7 +154,7 @@ export default {
         pageSize: 50,
       };
       // 猜你喜欢总页数
-      this.guessTotalPages = 0;
+      this.guessTotalPages = 1;
       // 下面这段代码也是两个函数同时执行，各自请求成功，各自完成赋值 不存在 函数1 等待函数2执行 情况！！！
       return Promise.all([
         this.getHomeBanner(), 
@@ -239,13 +239,9 @@ export default {
       this.goodsGuesslike= [];
       // 有没有猜你喜欢 下一页数据
       this.hasMore= true  
-      this.guessParams.page = 1;
-      this.guessTotalPages = 1;
-      
-      console.log('----->1');
+      // this.guessParams.page = 1;
+      // this.guessTotalPages = 1;
       await this.loadData();
-      console.log('----->7');
-
       // 数据回来关闭
       this.refresherTriggered = false;
     },
