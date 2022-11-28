@@ -11,12 +11,38 @@
         v-for="(item, index) in recommendList"
         :key="index"
         :class="{ active: index === activeIndex }"
-        @tap="activeIndex=index"
+        @tap="activeIndex = index"
       >
         {{ item.subTypes.title }}
       </text>
     </view>
     <!-- 列表内容 -->
+    <scroll-view
+      scroll-y
+      class="scroll-view"
+      @scrolltolower="handleScrolltolower"
+      v-for="(item, index) in recommendList"
+      :key="index"
+      v-show="activeIndex === index"
+    >
+      <view class="goods">
+        <navigator
+          hover-class="none"
+          class="navigator"
+          v-for="goods in item.goodsItems.items"
+          :key="goods.id"
+          :url="`/pages/goods/index?id=${goods.id}`"
+        >
+          <image class="thumb" :src="goods.picture"></image>
+          <view class="name ellipsis">{{ goods.name }}</view>
+          <view class="price">
+            <text class="symbol">¥</text>
+            <text class="number">{{ goods.price }}</text>
+          </view>
+        </navigator>
+      </view>
+      <view class="loading">正在加载...</view>
+    </scroll-view>
   </view>
 </template>
 
@@ -52,15 +78,23 @@ export default {
     // console.log("26----->getHomeRecommend", result);
     // 赋值背景大图
     this.bannerPicture = result.result.bannerPicture;
-    0;
     // 赋值构造数据列表
-    this.recommendList = result.result.subTypes.map((item)=>{
+    this.recommendList = result.result.subTypes.map((item) => {
+      // 获取 subTypes id对应的数据
+      const id = item.id;
+      // id 就是 goodsItem的key，根据key获取对应的值
+      const value = result.result.goodsItems[id];
       return {
         // tab栏要的数据 构造好
         subTypes: item,
-      }
-    })
-    console.log('----->61',this.recommendList);
+        // 商品列表相关的数据
+        goodsItems: value,
+      };
+    });
+    console.log("----->61", this.recommendList);
+  },
+  methods: {
+    handleScrolltolower(){}
   },
 };
 </script>
