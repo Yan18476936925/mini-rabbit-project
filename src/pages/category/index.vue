@@ -7,7 +7,7 @@
       </view>
     </view>
     <!-- 分类 -->
-    <view>
+    <view class="categories">
       <!-- 左侧标题滚动组件 -->
       <scroll-view class="primary" scroll-y>
         <view
@@ -20,12 +20,45 @@
           {{ item.name }}
         </view>
       </scroll-view>
+      <!-- 右侧滚动组件 -->
+      <scroll-view class="secondary" scroll-y>
+        <!-- 焦点图 -->
+        <Carousel class="banner" height="200rpx" :banners="banners"></Carousel>
+        <!-- 区块 -->
+        <view class="panel" v-for="item in categorySubList" :key="item.id">
+          <view class="title">
+            {{ item.name }}
+            <navigator
+              class="more"
+              hover-class="none"
+              url="/pages/goods/list/index"
+              >全部</navigator
+            >
+          </view>
+          <view class="section">
+            <navigator
+              v-for="goods in item.goods"
+              :key="goods.id"
+              hover-class="none"
+              :url="`/pages/goods/index?id=${goods.id}`"
+            >
+              <image :src="goods.picture"></image>
+              <view class="name ellipsis">{{ goods.name }}</view>
+              <view class="price">
+                <text class="symbol">¥</text>
+                <text class="number">{{ goods.price }}</text>
+              </view>
+            </navigator>
+          </view>
+        </view>
+      </scroll-view>
     </view>
   </view>
 </template>
 
 <script>
 import { getCategoryTop } from "@/http/category.js";
+import { getHomeBanner } from "@/http/home.js";
 export default {
   data() {
     return {
@@ -33,12 +66,27 @@ export default {
       categoryTop: [],
       // 当前显示的菜单下标
       activeIndex: 0,
+      banners: [],
     };
   },
+  computed: {
+    // 根据下标和一级分类 计算出要显示的二级分类数据
+    categorySubList() {
+      if (this.categoryTop.length) {
+        return this.categoryTop[this.activeIndex].children;
+      }
+      return []
+    },
+  },
   async onLoad() {
+    // 获取一级分类
     const result = await getCategoryTop();
-    console.log('40----->getCategoryTop', result);
-    this.categoryTop = result.result
+    console.log("40----->getCategoryTop", result);
+    this.categoryTop = result.result;
+    // 获取轮播图
+    const result2 = await getHomeBanner(2);
+    console.log("50----->getHomeBanner", result2);
+    this.banners = result2.result;
   }
 };
 </script>
