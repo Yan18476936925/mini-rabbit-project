@@ -11,38 +11,12 @@
         v-for="(item, index) in recommendList"
         :key="index"
         :class="{ active: index === activeIndex }"
-        @tap="activeIndex = index"
+        @tap="activeIndex=index"
       >
         {{ item.subTypes.title }}
       </text>
     </view>
     <!-- 列表内容 -->
-    <scroll-view
-      scroll-y
-      class="scroll-view"
-      @scrolltolower="handleScrolltolower"
-      v-for="(item, index) in recommendList"
-      :key="index"
-      v-show="activeIndex === index"
-    >
-      <view class="goods">
-        <navigator
-          hover-class="none"
-          class="navigator"
-          v-for="goods in item.goodsItems.items"
-          :key="goods.id"
-          :url="`/pages/goods/index?id=${goods.id}`"
-        >
-          <image class="thumb" :src="goods.picture"></image>
-          <view class="name ellipsis">{{ goods.name }}</view>
-          <view class="price">
-            <text class="symbol">¥</text>
-            <text class="number">{{ goods.price }}</text>
-          </view>
-        </navigator>
-      </view>
-      <view class="loading">正在加载...</view>
-    </scroll-view>
   </view>
 </template>
 
@@ -68,31 +42,25 @@ export default {
       4: { title: "领券中心", url: "/home/new/mutli" }, // 后端未提供，暂用新鲜好物url
       5: { title: "新鲜好物", url: "/home/new/mutli" },
     };
-    // 获取当前type对应的数据
-    const currentInfo = urlMap[type];
-    console.log("21----->currentInfo", currentInfo);
+    // 获取当前type对应的数据 将currentInfo设置成一个全局变量
+    this.currentInfo = urlMap[type];
+    // console.log("21----->currentInfo", currentInfo);
     // 动态的设置 页面的标题
-    uni.setNavigationBarTitle({ title: currentInfo.title });
+    uni.setNavigationBarTitle({ title: this.currentInfo.title });
     // 发送请求获取对应的数据
-    const result = await getHomeRecommend(currentInfo.url);
-    console.log("26----->getHomeRecommend", result);
+    const result = await getHomeRecommend(this.currentInfo.url);
+    // console.log("26----->getHomeRecommend", result);
     // 赋值背景大图
     this.bannerPicture = result.result.bannerPicture;
+    0;
     // 赋值构造数据列表
-    this.recommendList = result.result.subTypes.map((item) => {
-      const id = item.id;
-      const value = result.result.goodsItems[id];
-      console.log("----->id", id);
+    this.recommendList = result.result.subTypes.map((item)=>{
       return {
         // tab栏要的数据 构造好
         subTypes: item,
-        goodsItems: value,
-      };
-    });
-    console.log("----->61", this.recommendList);
-  },
-  methods: {
-  handleScrolltolower(){}
+      }
+    })
+    console.log('----->61',this.recommendList);
   },
 };
 </script>

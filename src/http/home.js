@@ -1,11 +1,8 @@
 import http from "@/utils/http";
-
 /**
- * 广告区域(pc-小程序)
+ * 首页-广告轮播图
  * @param {Number} distributionSite 要获取首页的数据-1 还是分类页面的数据-2
- * @returns Object
- */
-// 首页-广告轮播图
+*/
 export const getHomeBanner = (distributionSite = 1) => {
   return http({
     url: "/home/banner",
@@ -20,8 +17,7 @@ export const getHomeCategoryHeadMutli = () => {
 export const getHomeHotMutli = () => {
   return http({ url: "/home/hot/mutli" });
 };
-// 首页-新鲜好物
-// limit：默认值为4，指定响应数据中商品的数量
+// 首页-新鲜好物 limit：默认值为4，指定响应数据中商品的数量
 export const getHomeNew = (data) => {
   return http({ 
     url: "/home/new",
