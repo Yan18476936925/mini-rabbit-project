@@ -172,25 +172,25 @@ export default {
       // 只要一个函数 拿async去做修饰，那么函数的返回值 就会自动的变成promise
       const result = await getHomeBanner();
       this.banners = result.result;
-      console.log('----->2');
+      // console.log('----->2');
     },
     // 获取前台类目
     async getHomeCategoryHeadMutli() {
       const result = await getHomeCategoryHeadMutli();
       this.HomeCategoryHeadMutli = result.result;
-      console.log('----->3');
+      // console.log('----->3');
     },
     // 获取人气推荐
     async getHomeHotMutli() {
       const result = await getHomeHotMutli();
       this.hotMutli = result.result;
-      console.log('----->4');
+      // console.log('----->4');
     },
     // 获取新鲜好物
     async getHomeNew() {
       const result = await getHomeNew();
       this.homeNew = result.result;
-      console.log('----->5');
+      // console.log('----->5');
     },
     // 获取猜你喜欢
     async getHomeGoodsGuesslike(params) {
@@ -200,7 +200,7 @@ export default {
       this.goodsGuesslike = result.result.items;
       // 赋值给猜你喜欢总页数
       this.guessTotalPages = result.result.pages;
-      console.log('----->6');
+      // console.log('----->6');
     },
 
     async onScrolltolower() {
