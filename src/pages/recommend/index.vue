@@ -11,7 +11,7 @@
         v-for="(item, index) in recommendList"
         :key="index"
         :class="{ active: index === activeIndex }"
-        @tap="activeIndex=index"
+        @tap="activeIndex = index"
       >
         {{ item.subTypes.title }}
       </text>
@@ -68,28 +68,52 @@ export default {
       4: { title: "领券中心", url: "/home/new/mutli" }, // 后端未提供，暂用新鲜好物url
       5: { title: "新鲜好物", url: "/home/new/mutli" },
     };
-    // 获取当前type对应的数据
-    const currentInfo = urlMap[type];
+    // 获取当前type对应的数据 将currentInfo设置成一个全局变量
+    this.currentInfo = urlMap[type];
     // console.log("21----->currentInfo", currentInfo);
     // 动态的设置 页面的标题
-    uni.setNavigationBarTitle({ title: currentInfo.title });
+    uni.setNavigationBarTitle({ title: this.currentInfo.title });
     // 发送请求获取对应的数据
-    const result = await getHomeRecommend(currentInfo.url);
+    const result = await getHomeRecommend(this.currentInfo.url);
     // console.log("26----->getHomeRecommend", result);
     // 赋值背景大图
-    this.bannerPicture = result.result.bannerPicture;0
+    this.bannerPicture = result.result.bannerPicture;
+    0;
     // 赋值构造数据列表
-    this.recommendList = result.result.subTypes.map((item)=>{
+    this.recommendList = result.result.subTypes.map((item) => {
       // id 就是 goodsItem的key，根据key获取对应的值
-      const value = result.result.goodsItems[item.id]
+      const value = result.result.goodsItems[item.id];
       return {
         // tab栏要的数据 构造好
         subTypes: item,
         // 商品列表数据
         goodsItems: value,
-      }
-    })
+      };
+    });
     console.log("26----->列表", this.recommendList);
+  },
+  methods: {
+    // 滚动条触底事件
+    async handleScrolltolower() {
+      // 先知道当前是对哪组数据做分页
+      const currentShow = this.recommendList[this.activeIndex];
+      // 判断还有没有下一页数据
+      // 拿当前页码和总页数比较  ||   拿当前数组长度 和 总条数做比较
+      const {page,pages} = currentShow.goodsItems
+      if (page>= pages) {
+        uni.showToast({title:'没有更多数据了',icon:"none"})
+        return;
+      }
+      // 根据接口要求，构造参数
+      const data = {
+        subType: currentShow.subTypes.id,
+        page: page + 1,
+        pageSize: 10,
+      }
+      // 重新发送请求
+      const result = await getHomeRecommend(this.currentInfo.url);
+      console.log("115----->getHomeRecommend", result);
+    },
   },
 };
 </script>
