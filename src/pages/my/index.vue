@@ -1,24 +1,118 @@
 <template>
   <scroll-view enhanced scroll-y id="scrollView">
-    <view class="viewport" :style="{ paddingTop: safeArea.top + 'px' }">
+    <view
+      class="viewport"
+      :style="{ paddingTop: safeArea.top + bounding.height + 'px' }"
+    >
       <!-- 顶部背景 -->
-      <view class="navbar" :style="{ paddingTop: 0 + 'px' }">
+      <view class="navbar">
         <view class="title">我的</view>
       </view>
       <!-- 个人资料 -->
+      <view class="profile">
+        <view class="overview">
+          <navigator v-if="profile" url="/pages/my/profile" hover-class="none">
+            <image
+              mode="aspectFill"
+              class="avatar"
+              :src="profile.avatar"
+            ></image>
+          </navigator>
+          <!-- 未登录：点击头像跳转登录页 -->
+          <navigator v-else url="/pages/login/index" hover-class="none">
+            <image
+              class="avatar"
+              src="http://static.botue.com/erabbit/static/uploads/avatar_3.jpg"
+            ></image>
+          </navigator>
+          <view class="meta">
+            <view @tap="goToProfile" v-if="profile" class="nickname">
+              {{ profile.nickname }}
+            </view>
+            <!-- 未登录：点击文字跳转登录页 -->
+            <navigator
+              v-else
+              url="/pages/login/index"
+              hover-class="none"
+              class="nickname"
+            >
+              未登录
+            </navigator>
+            <view class="extra">
+              <text v-if="!profile" class="tips">点击登录账号</text>
+              <template v-else>
+                <text class="update">更新头像昵称</text>
+                <text class="relogin">切换账号</text>
+              </template>
+            </view>
+          </view>
+        </view>
+        <navigator class="settings" url="/pages/my/settings" hover-class="none">
+          设置
+        </navigator>
+      </view>
       <!-- 订单 -->
+      <view class="orders">
+        <view class="title">
+          我的订单
+          <navigator url="/pages/order/index?type=0" hover-class="none">
+            查看全部订单<text class="icon-right"></text>
+          </navigator>
+        </view>
+        <view class="section">
+          <navigator
+            v-for="item in orderTypes"
+            :key="item.text"
+            :class="item.icon"
+            :url="'/pages/order/index?type=' + item.type"
+            hover-class="none"
+            >{{ item.text }}</navigator
+          >
+          <navigator class="icon-handset" url=" " hover-class="none"
+            >售后</navigator
+          >
+        </view>
+      </view>
       <!-- 部件 -->
+      <view class="widgets">
+        <view class="tabs">
+          <text
+            v-for="(item, index) in tabs"
+            :key="item"
+            :class="{ active: tabIndex === index }"
+            @click="tabIndex = index"
+            >{{ item }}</text
+          >
+        </view>
+      </view>
       <!-- 商品列表 -->
+      <CollectGoods :tabIndex="tabIndex"></CollectGoods>
     </view>
   </scroll-view>
 </template>
 
 <script>
 import { mapState } from "vuex";
+import CollectGoods from "./components/CollectGoods.vue";
 export default {
+  components: {
+    CollectGoods
+  },
   computed: {
-    ...mapState(['safeArea'])
-  }
+    ...mapState(["safeArea", "bounding"]),
+  },
+  data() {
+    return {
+      orderTypes: [
+        { text: "待付款", icon: "icon-currency", type: 1 },
+        { text: "待发货", icon: "icon-gift", type: 2 },
+        { text: "待收货", icon: "icon-check", type: 3 },
+        { text: "待评价", icon: "icon-comment", type: 4 },
+      ],
+      tabs: ["我的收藏", "猜你喜欢", "我的足迹"],
+      tabIndex: 0,
+    };
+  },
 };
 </script>
 
@@ -32,8 +126,8 @@ page {
   height: 100%;
   overflow: hidden;
 }
-.viewport {
-}
+// .viewport {
+// }
 .navbar {
   width: 750rpx;
   height: 380rpx;
