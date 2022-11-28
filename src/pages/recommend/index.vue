@@ -110,9 +110,21 @@ export default {
         page: page + 1,
         pageSize: 10,
       }
-      // 重新发送请求
-      const result = await getHomeRecommend(this.currentInfo.url);
+      // 重新发送请求获取列表
+      const result = await getHomeRecommend(this.currentInfo.url,data);
       console.log("115----->getHomeRecommend", result);
+      // 实现 新旧数据的合并
+      // 获取新数据对应的goodsItems对象
+      const newGoodsItems = result.result.goodsItems[currentShow.subTypes.id]
+      console.log('----->newGoodsItems',newGoodsItems);
+      // 直接覆盖 
+      // this.recommendList[this.activeIndex].goodsItems = newGoodsItems;
+      // 全部覆盖 
+      this.recommendList[this.activeIndex].goodsItems = {
+        ...newGoodsItems,
+        // items:[...旧的items,...新的items]
+        items:[...this.recommendList[this.activeIndex].goodsItems.items,...newGoodsItems.items]
+      };
     },
   },
 };
