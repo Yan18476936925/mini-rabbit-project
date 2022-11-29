@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+
+<body>
+  <script>
+  /*
+    vue针对data中的对象 如果对象中后期才新增一个属性，vue无法监控到！！！
+    当新增的数据发生修改了之后，vue中的监视不生效 无法绑定 
+    1 vue2 天然存在这个问题 vue2双向绑定的底层 Object.defineProperty -- 无法对新增的属性做监控
+        提出了解决方案  vue2 提出api专门来解决这个问题
+          Vue.$set(对象,"属性名","属性值")
+          this.$set(对象,"属性名","属性值")
+    2 vue3 不存在这个温觉 vue3双向绑定的底层新api proxy -- 对象 全方位的把控 
+  */
+  </script>
+</body>
+
+</html>

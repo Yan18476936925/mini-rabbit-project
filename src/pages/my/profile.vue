@@ -118,7 +118,41 @@ export default {
       });
       // 获取最新数据
       this.loadGetMemberProfile()
-    }
+    },
+    // 修改性别
+    genderChange(e){
+      console.log('----->gender',e);
+      this.memberProfile.gender =  e.detail.value
+    },
+    // 修改生日
+    handleBirthdayChange(e){
+      console.log('----->birthday',e);
+      this.memberProfile.birthday =  e.detail.value
+    },
+    // 区域地质修改
+    handleFullLocationChange(e){
+      console.log('----->e',e);
+      // 数组[1000021,200012,30003]省市区编码
+      const { code } = e.detail
+      // vue针对data中的数据-对象，如果新增了属性，vue无法做到监听 ，
+      // 无法做到对新增数据的 双向绑定
+      // this.memberProfile.provinceCode = code[0]
+      // this.memberProfile.cityCode = code[1]
+      // this.memberProfile.countyCode = code[2]
+      
+      // 如果写代码发现点语法不生效 并且是新增属性 解决方法 $set
+      // 修改成$set的方式才能实现后期双向绑定
+      // Vue.$set(对象,"属性名","属性值")
+      this.$set(this.memberProfile,"provinceCode",code[0])
+      this.$set(this.memberProfile,"cityCode",code[1])
+      this.$set(this.memberProfile,"countyCode",code[2])
+    },
+    // 确认保存
+    handleSubmitForm(){},
+    // 返回上一页
+    goBack(){
+      uni.navigateBack()
+    },
   }
 };
 </script>
