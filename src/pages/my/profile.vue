@@ -92,6 +92,7 @@ import { putMembeProfile } from "@/http/login.js";
 export default {
   data() {
     return {
+      // 会员信息
       memberProfile:null,
     };
   },
@@ -103,12 +104,11 @@ export default {
   },
   methods: {
     ...mapActions('user', ["fetchMemberProfile"]),
-    // fetchProfile 两个作用
-    // 1 动态获取会员信息，然后把信息 存到 vuex中  正常业务
-    // 2 考虑到当前页面的业务  memberProfile 只能定义在data中， 同时又想要获取最新的数据 给它
-    // fetchProfile 返回一个 最新的会员信息
     async loadGetMemberProfile(){
-      // 获取获取个人中心基本信息
+      // fetchProfile 两个作用
+      // 1 动态获取会员信息，然后把信息 存到 vuex中  正常业务
+      // 2 考虑到当前页面的业务  memberProfile 只能定义在data中， 同时又想要获取最新的数据 给它
+      // fetchProfile 返回一个 最新的会员信息
       const result = await this.fetchMemberProfile();
       console.log('88----->fetchMemberProfile', result);
       this.memberProfile = result
@@ -170,6 +170,8 @@ export default {
       // 调用修改接口实现更新
       const result = await putMembeProfile(data);
       console.log('166----->putMembeProfile', result);
+      // 修改成功同步一下 vuex中的数据 发送请求 获取一次最新的数据然后存在vuex中
+      await this.fetchMemberProfile()
       uni.showToast({title:'修改成功'})
       setTimeout(() => {
         uni.navigateBack();

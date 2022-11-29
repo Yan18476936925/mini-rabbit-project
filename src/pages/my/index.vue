@@ -92,7 +92,7 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState,mapActions  } from "vuex";
 import CollectGoods from "./components/CollectGoods.vue";
 export default {
   components: {
@@ -101,6 +101,12 @@ export default {
   computed: {
     ...mapState(["safeArea", "bounding"]),
     ...mapState("user",["memberProfile"])
+  },
+  onShow() {
+    this.fetchMemberProfile();
+  },
+  methods: {
+    ...mapActions("user", ["fetchMemberProfile"]),
   },
   data() {
     return {

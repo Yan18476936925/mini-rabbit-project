@@ -72,19 +72,13 @@ export default {
     //   });
     //   console.log('74----->addLoginWxmin', result);
     // },
-    // // 获取手机号码的事件回调函数
-    // async handleGetPhoneNumber2(){
-    //   const result = await addLoginWxminSimple({
-    //     phoneNumber: 18476936925,
-    //   });
-    //   console.log('74----->addLoginWxmin', result);
-    // }
-    ...mapActions("user",["fetchProfile"]),
+    ...mapActions("user",["fetchProfile"],["fetchMemberProfile"]),
     // 获取手机号码的事件回调函数
     async handleGetPhoneNumber2(){
       await this.fetchProfile({
         phoneNumber: 18476936925,
       })
+      await this.fetchMemberProfile()
       uni.showToast({title:"登录成功"})
       setTimeout(() => {
         uni.navigateBack()

@@ -28,7 +28,6 @@ export default {
     // 异步获取会员信息
     async fetchMemberProfile(context){
       const result = await getMemberProfile();
-      console.log('30----->getMemberProfile', result);
       context.commit("setMemberProfile",result.result)
       return result.result
     },
