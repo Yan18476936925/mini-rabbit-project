@@ -22,3 +22,14 @@ export const getMemberProfile = ()=>{
     url:'/member/profile',
   })
 }
+/**
+ * 修改个人信息
+ * @param {Object} data 要修改的个人信息的数据
+ */
+export const putMembeProfile = (data) => {
+  return http({ 
+    url: "/member/profile", 
+    method: "put", 
+    data 
+  });
+};

@@ -78,9 +78,17 @@
   2 调用小程序 内置的  选择图片-拍照的API  chooseImage
   3 返回 选择图片的临时地址  上传给后端接口 - 完成头像上传 - 头像修改功能
   4 修改成功之后， 重新发送一次请求 获取最新数据  显示出来 
+2 点击保存 按钮 实现 修改
+  1 给保存按钮绑定点击事件  handleSubmitForm
+  2 获取 表单的数据，根据接口的要求 拼接参数 发送给后端 完成修改 
+  3 修改成功了 提示用户  等待一会 之后  返回上一个页面 
+3 fullLocation 详细地址分析
+  1 获取当前用户数据的时候，后端会自动根据 已经有 省市区的邮编  来 获取 详细信息，存到 fullLocation字段 
+  2 用户自己 在编辑 省市区 组件时候， 页面中 没有实时显示出 中文 地址信息 
+  3  在picker组件 改变的时候  把 value 转成 字符串  设置到 memberProfile.fullLocation 即可 
 */
 import { mapState } from "vuex";
-import { getMemberProfile } from "@/http/login.js";
+import { getMemberProfile,putMembeProfile } from "@/http/login.js";
 export default {
   data() {
     return {
@@ -131,15 +139,16 @@ export default {
     },
     // 区域地质修改
     handleFullLocationChange(e){
-      console.log('----->e',e);
+      // console.log('----->e',e);
       // 数组[1000021,200012,30003]省市区编码
-      const { code } = e.detail
+      const { code,value } = e.detail
+      this.memberProfile.fullLocation = value.join("")
+      console.log('----->this.memberProfile.fullLocation',this.memberProfile.fullLocation);
       // vue针对data中的数据-对象，如果新增了属性，vue无法做到监听 ，
       // 无法做到对新增数据的 双向绑定
       // this.memberProfile.provinceCode = code[0]
       // this.memberProfile.cityCode = code[1]
       // this.memberProfile.countyCode = code[2]
-      
       // 如果写代码发现点语法不生效 并且是新增属性 解决方法 $set
       // 修改成$set的方式才能实现后期双向绑定
       // Vue.$set(对象,"属性名","属性值")
@@ -148,7 +157,19 @@ export default {
       this.$set(this.memberProfile,"countyCode",code[2])
     },
     // 确认保存
-    handleSubmitForm(){},
+    async handleSubmitForm(){
+      // 获取 接口要的数据
+      const {birthday, cityCode, countyCode, gender, nickname, profession, provinceCode} = this.memberProfile
+      // 拼接成参数 发送给后端
+      const data = {birthday, cityCode, countyCode, gender, nickname, profession, provinceCode}
+      // 调用修改接口实现更新
+      const result = await putMembeProfile(data);
+      console.log('166----->putMembeProfile', result);
+      uni.showToast({title:'修改成功'})
+      setTimeout(() => {
+        uni.navigateBack();
+      }, 1000);
+    },
     // 返回上一页
     goBack(){
       uni.navigateBack()
