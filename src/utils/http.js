@@ -7,7 +7,7 @@
  */
 // uni.request({ url: "http://xxxxxxx" }); // url 是完整，所以不需要拼接
 // uni.request({ url: "/home/oneStop/mutli", header: { a: 1, b: 2 } }); // url 是不完整的，所以就需要拼接
-
+import store from "@/store";
 // 1 基础地址
 const baseURL = "https://pcapi-xiaotuxian-front-devtest.itheima.net";
 // 2 来自于 uniapp的官网
@@ -26,6 +26,9 @@ const request = {
       "source-client": "miniapp", // 添加小程序端调用标识--给后端判断使用！！
     };
     // console.log('----->28',args);
+    if (store.state.user.profile) {
+      args.header.Authorization = store.state.user.profile.token
+    }
   },
   // 完成后
   complete(res) {
@@ -50,6 +53,10 @@ export default (options) => {
           // 成功 resolve把请求后的参数返回
           resolve(res.data);
         } else {
+          if (res.statusCode === 401) {
+            // 跳转回登录页面
+            uni.navigateTo({ url:"/pages/login/index"});
+          }
           // 失败
           reject(res);
         }
