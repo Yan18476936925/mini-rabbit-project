@@ -6,11 +6,11 @@
       ></image>
     </view>
     <view class="login">
-      <button
-        class="button phone"
-        open-type="getPhoneNumber"
-        @getphonenumber="handleGetPhoneNumber"
-      >
+      <!-- <button class="button phone" open-type="getPhoneNumber" @getphonenumber="handleGetPhoneNumber" >
+        <text class="icon icon-phone"></text>
+        手机号快捷登录
+      </button> -->
+      <button class="button phone" open-type="getPhoneNumber" @getphonenumber="handleGetPhoneNumber2" >
         <text class="icon icon-phone"></text>
         手机号快捷登录
       </button>
@@ -36,6 +36,65 @@
     </view>
   </view>
 </template>
+
+<script>
+/* 
+  1 在登录页面 开始加载的时候 onLoad 调用小程序的 api wx.login 获取 code 
+  2 点击按钮的时候 获取手机号码加密信息 
+    1 设置 button 的open-type 类型  getPhoneNumber 必须要大小写 敏感 看文档！！！
+    2 绑定 获取手机号码事件  @getphonenumber
+    3 再在事件对应回调中 获取 加密过的手机号码信息
+  3 把数据都发送给后端 来完成 登录 
+  4 登录成功
+    1 把个人信息数据（包含token） 存到 vuex中 
+    2 返回上一页即可 
+*/
+import { addLoginWxmin,addLoginWxminSimple } from "@/http/login.js";
+import { mapActions } from "vuex";
+export default {
+  // data() {
+  //   return {
+  //     code:''
+  //   };
+  // },
+  async onLoad() {
+    // uni.login 是 uni-api
+    // 1 支持promise 所以我们可使用 await
+    // 2 如果 它 存在 返回值，该返回值格式 数组
+    //    [错误信息,返回值]
+    // code 是微信小程序提供 的5分钟 有效期 临时凭据 作用：为了向我们的后端 获取token
+    const [err,{code}] = await uni.login();
+    this.code = code
+  },
+  methods: {
+    // 获取手机号码的事件回调函数
+    // async handleGetPhoneNumber(e){
+    //   const {encryptedData,iv}  = e.detail
+    //   const result = await addLoginWxmin({
+    //     encryptedData,
+    //     iv,
+    //     code:this.code
+    //   });
+    //   console.log('74----->addLoginWxmin', result);
+    // },
+    // // 获取手机号码的事件回调函数
+    // async handleGetPhoneNumber2(){
+    //   const result = await addLoginWxminSimple({
+    //     phoneNumber: 18476936925,
+    //   });
+    //   console.log('74----->addLoginWxmin', result);
+    // }
+    ...mapActions("user",["fetchProfile"]),
+    // 获取手机号码的事件回调函数
+    async handleGetPhoneNumber2(){
+      this.fetchProfile({
+        phoneNumber: 18476936925,
+      })
+    }
+  },
+};
+</script>
+
 <style lang="scss">
 page {
   height: 100%;

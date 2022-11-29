@@ -2,6 +2,7 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import persistence from "vuex-uniapp-persistence";
+import user from "./user.js";
 
 Vue.use(Vuex); //vue的插件机制
 //Vuex.Store 构造器选项
@@ -12,7 +13,7 @@ const store = new Vuex.Store({
   },
   mutations: { },
   getters: {},
-  modules: {},
+  modules: {user},
   // 使用模块
   plugins:[persistence("小兔鲜儿Key")]
 });
