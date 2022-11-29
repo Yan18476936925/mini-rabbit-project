@@ -25,7 +25,7 @@ const request = {
       ...args.header, // 保留原本的header
       "source-client": "miniapp", // 添加小程序端调用标识--给后端判断使用！！
     };
-    // console.log('----->28',args);
+    // 判断一下有没有token 有 就携带
     if (store.state.user.profile) {
       args.header.Authorization = store.state.user.profile.token
     }

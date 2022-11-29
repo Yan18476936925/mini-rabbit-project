@@ -86,6 +86,7 @@ export default {
   async onLoad() {
     const result = await getMemberProfile();
     console.log('88----->getMemberProfile', result);
+    this.memberProfile = result.result
   }
   
 };
