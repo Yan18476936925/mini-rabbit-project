@@ -11,11 +11,11 @@
       <!-- 个人资料 -->
       <view class="profile">
         <view class="overview">
-          <navigator v-if="profile" url="/pages/my/profile" hover-class="none">
+          <navigator v-if="memberProfile" url="/pages/my/profile" hover-class="none">
             <image
               mode="aspectFill"
               class="avatar"
-              :src="profile.avatar"
+              :src="memberProfile.avatar"
             ></image>
           </navigator>
           <!-- 未登录：点击头像跳转登录页 -->
@@ -26,8 +26,8 @@
             ></image>
           </navigator>
           <view class="meta">
-            <view @tap="goToProfile" v-if="profile" class="nickname">
-              {{ profile.nickname }}
+            <view @tap="goToProfile" v-if="memberProfile" class="nickname">
+              {{ memberProfile.nickname }}
             </view>
             <!-- 未登录：点击文字跳转登录页 -->
             <navigator
@@ -39,7 +39,7 @@
               未登录
             </navigator>
             <view class="extra">
-              <text v-if="!profile" class="tips">点击登录账号</text>
+              <text v-if="!memberProfile" class="tips">点击登录账号</text>
               <template v-else>
                 <text class="update">更新头像昵称</text>
                 <text class="relogin">切换账号</text>
@@ -100,7 +100,7 @@ export default {
   },
   computed: {
     ...mapState(["safeArea", "bounding"]),
-    ...mapState("user",["profile"])
+    ...mapState("user",["memberProfile"])
   },
   data() {
     return {

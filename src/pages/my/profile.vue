@@ -87,8 +87,8 @@
   2 用户自己 在编辑 省市区 组件时候， 页面中 没有实时显示出 中文 地址信息 
   3  在picker组件 改变的时候  把 value 转成 字符串  设置到 memberProfile.fullLocation 即可 
 */
-import { mapState } from "vuex";
-import { getMemberProfile,putMembeProfile } from "@/http/login.js";
+import { mapState,mapActions } from "vuex";
+import { putMembeProfile } from "@/http/login.js";
 export default {
   data() {
     return {
@@ -96,17 +96,22 @@ export default {
     };
   },
   computed: {
-    ...mapState(["safeArea"])
+    ...mapState(["safeArea"]),
   },
   async onLoad() {
     this.loadGetMemberProfile()
   },
   methods: {
+    ...mapActions('user', ["fetchMemberProfile"]),
+    // fetchProfile 两个作用
+    // 1 动态获取会员信息，然后把信息 存到 vuex中  正常业务
+    // 2 考虑到当前页面的业务  memberProfile 只能定义在data中， 同时又想要获取最新的数据 给它
+    // fetchProfile 返回一个 最新的会员信息
     async loadGetMemberProfile(){
       // 获取获取个人中心基本信息
-      const result = await getMemberProfile();
-      console.log('88----->getMemberProfile', result);
-      this.memberProfile = result.result
+      const result = await this.fetchMemberProfile();
+      console.log('88----->fetchMemberProfile', result);
+      this.memberProfile = result
     },
     // 修改头像函数
     async changeAvatar(){
