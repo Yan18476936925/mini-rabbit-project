@@ -72,6 +72,13 @@
   </view>
 </template>
 <script>
+/* 
+1 修改头像
+  1 给头像绑定点击事件 - 对应处理函数  changeAvatar
+  2 调用小程序 内置的  选择图片-拍照的API  chooseImage
+  3 返回 选择图片的临时地址  上传给后端接口 - 完成头像上传 - 头像修改功能
+  4 修改成功之后， 重新发送一次请求 获取最新数据  显示出来 
+*/
 import { mapState } from "vuex";
 import { getMemberProfile } from "@/http/login.js";
 export default {
@@ -84,11 +91,35 @@ export default {
     ...mapState(["safeArea"])
   },
   async onLoad() {
-    const result = await getMemberProfile();
-    console.log('88----->getMemberProfile', result);
-    this.memberProfile = result.result
+    this.loadGetMemberProfile()
+  },
+  methods: {
+    async loadGetMemberProfile(){
+      // 获取获取个人中心基本信息
+      const result = await getMemberProfile();
+      console.log('88----->getMemberProfile', result);
+      this.memberProfile = result.result
+    },
+    // 修改头像函数
+    async changeAvatar(){
+      // uni-api promise有返回值数组
+      const [imagErr,imgResult] = await uni.chooseImage({
+        count: 9, // 只能选择一张图片
+      })
+      console.log('----->imgResult',imgResult);
+      // 获取临时的图片地址 内存图片地址
+      const tempFilePath = imgResult.tempFilePaths[0]
+      // 将这张图片 上传到 后端接口中 完成  头像修改功能
+      // 小程序中 发起普通的网络请求和文件上传 是用不同的API-不像以前web的ajax
+      const [uploadErr,uploadResult] = await uni.uploadFile({
+        url: '/member/profile/avatar',
+        filePath: tempFilePath,
+        name:'file',
+      });
+      // 获取最新数据
+      this.loadGetMemberProfile()
+    }
   }
-  
 };
 </script>
 
@@ -126,7 +157,7 @@ page {
 }
 .avatar {
   text-align: center;
-  padding: 20rpx 0 40rpx;
+  padding: 0rpx 0 40rpx;
   image {
     width: 160rpx;
     height: 160rpx;
