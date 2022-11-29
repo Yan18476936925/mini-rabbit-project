@@ -49,14 +49,9 @@
     1 把个人信息数据（包含token） 存到 vuex中 
     2 返回上一页即可 
 */
-import { addLoginWxmin,addLoginWxminSimple } from "@/http/login.js";
+// import { addLoginWxmin,addLoginWxminSimple } from "@/http/login.js";
 import { mapActions } from "vuex";
 export default {
-  // data() {
-  //   return {
-  //     code:''
-  //   };
-  // },
   async onLoad() {
     // uni.login 是 uni-api
     // 1 支持promise 所以我们可使用 await
@@ -87,9 +82,13 @@ export default {
     ...mapActions("user",["fetchProfile"]),
     // 获取手机号码的事件回调函数
     async handleGetPhoneNumber2(){
-      this.fetchProfile({
+      await this.fetchProfile({
         phoneNumber: 18476936925,
       })
+      uni.showToast({title:"登录成功"})
+      setTimeout(() => {
+        uni.navigateBack()
+      }, 1000);
     }
   },
 };

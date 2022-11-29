@@ -100,6 +100,7 @@ export default {
   },
   computed: {
     ...mapState(["safeArea", "bounding"]),
+    ...mapState("user",["profile"])
   },
   data() {
     return {
