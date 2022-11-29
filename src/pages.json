@@ -29,6 +29,14 @@
       "style": {
         "navigationBarTitleText": "登录"
       }
+    },
+    {
+      "path": "pages/my/profile",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "white"
+        
+      }
     }
   ],
   "tabBar": {
@@ -88,6 +96,11 @@
       {
         "name": "登录",
         "path": "pages/login/index", 
+        "query": "" 
+      },
+      {
+        "name": "个人中心",
+        "path": "pages/my/profile", 
         "query": "" 
       }
     ]
