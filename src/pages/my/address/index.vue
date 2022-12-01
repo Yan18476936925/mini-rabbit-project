@@ -76,14 +76,8 @@ export default {
   methods: {
     async loadGetMemberAddress(){
       const result = await getMemberAddress();
-      console.log("62----->getMemberAddress", result);
+      // console.log("62----->getMemberAddress", result);
       this.addressList = result.result
-    },
-    onClick(e){
-      console.log('----->点击事件onClick');
-    },
-    swipeChange(e, index) {
-      console.log("滑动事件");
     },
     async onAddressRemove(id){
       // 如何在这里 获取到 被删除的地址的id！！！

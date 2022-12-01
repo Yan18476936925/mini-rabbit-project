@@ -24,4 +24,14 @@ export const delMemberAddress = (id) => {
     method: 'delete'
   });
 };
+/**
+ * 根据地址id来获取地址详情
+ * @param {string} id 地址id
+*/
+export const getDetailMembeAddress  = (id) => {
+  return http({
+    url: `/member/address/${id}`,
+    method: 'get'
+  });
+};
 

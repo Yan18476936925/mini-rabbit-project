@@ -54,7 +54,7 @@
 
 // 导入 validate对象
 import Schema from "validate";
-import { addMemberAddress } from "@/http/address.js";
+import { addMemberAddress,getDetailMembeAddress } from "@/http/address.js";
 export default {
   data() {
     return {
@@ -112,7 +112,7 @@ export default {
     },
     // 切换默认地址
     isDefaultChange(e) {
-      console.log("----->e", e);
+      // console.log("----->e", e);
       this.form.isDefault = e.detail.value ? 1 : 0;
     },
     async submitFrom() {
@@ -162,22 +162,30 @@ export default {
       });
       // 开始验证  不要直接传递我的数据  浅拷贝 信息的地址  解决 了 validate 自动剔除我们属性的问题
       const errorList = addressRule.validate({ ...this.form });
-      console.log("----->errorList", errorList);
       if (errorList[0]) {
         uni.showToast({ title: errorList[0].message, icon: "none" });
         return;
       }
-      console.log("----->this.form", this.form);
-      // 通过以上的校验表示没错 正常往下执行业务
-      // 传递参数 调用 新增地址的接口
       await addMemberAddress(this.form);
       // 成功  弹出提示  返回上一页 ！！
       uni.showToast({ title: "新增成功" });
       setTimeout(() => {
         uni.navigateBack();
       }, 1000);
-    }
+    },
   },
+  // 页面开始加载
+  async onLoad({id}) {
+    if (id) {
+      uni.setNavigationBarTitle({title:'编辑地址'})
+      const result = await getDetailMembeAddress(id);
+      console.log('186----->getDetailMembeAddress', result);
+       // 将地址详情 设置到 data中
+      this.form = result.result
+    }else{
+      uni.setNavigationBarTitle({ title: "新建地址" });
+    }
+  }
 };
 </script>
 <style lang="scss">
