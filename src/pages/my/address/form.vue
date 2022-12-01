@@ -54,7 +54,7 @@
 
 // 导入 validate对象
 import Schema from "validate";
-import { addMemberAddress,getDetailMembeAddress } from "@/http/address.js";
+import { addMemberAddress,getDetailMembeAddress,updateMembeAddress } from "@/http/address.js";
 export default {
   data() {
     return {
@@ -166,7 +166,16 @@ export default {
         uni.showToast({ title: errorList[0].message, icon: "none" });
         return;
       }
-      await addMemberAddress(this.form);
+      // 判断新建还是编辑
+      if (this.form.id) {
+        const result = await updateMembeAddress(this.form);
+        console.log('175----->updateMembeAddress', result);
+        uni.showToast({title:"编辑成功"})
+      }else{
+        // 传递参数 调用 新增地址的接口
+        await addMemberAddress(this.form);
+        uni.showToast({title:"新增成功"})
+      }
       // 成功  弹出提示  返回上一页 ！！
       uni.showToast({ title: "新增成功" });
       setTimeout(() => {

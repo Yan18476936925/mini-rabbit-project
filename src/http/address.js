@@ -34,4 +34,16 @@ export const getDetailMembeAddress  = (id) => {
     method: 'get'
   });
 };
+/**
+ * 根据id来修改地址
+ * @param {String} id 待修改地址的id
+ * @param {Object} data 地址信息
+ */
+export const updateMembeAddress  = (data) => {
+  return http({
+    url: `/member/address/${data.id}`,
+    method: 'put',
+    data
+  });
+};
 
