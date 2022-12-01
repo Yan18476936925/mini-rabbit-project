@@ -49,6 +49,12 @@
       }
     },
     {
+      "path": "pages/my/address/form",
+      "style": {
+        "navigationBarTitleText": "新建地址"
+      }
+    },
+    {
       "path": "pages/test/index",
       "style": {
         "navigationBarTitleText": "测试"
@@ -127,6 +133,11 @@
       {
         "name": "地址管理",
         "path": "pages/my/address/index", 
+        "query": "" 
+      },
+      {
+        "name": "新建地址",
+        "path": "pages/my/address/form", 
         "query": "" 
       },
       {
