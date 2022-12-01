@@ -55,6 +55,12 @@
       }
     },
     {
+      "path": "pages/goods/index",
+      "style": {
+        "navigationStyle": "custom"
+      }
+    },
+    {
       "path": "pages/test/index",
       "style": {
         "navigationBarTitleText": "测试"
@@ -139,6 +145,11 @@
         "name": "新建地址",
         "path": "pages/my/address/form", 
         "query": "" 
+      },
+      {
+        "name": "商品详情",
+        "path": "pages/goods/index", 
+        "query": "id=1667068" 
       },
       {
         "name": "test",
