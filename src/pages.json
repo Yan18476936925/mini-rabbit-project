@@ -9,8 +9,7 @@
       }
     },
     {
-      "path": "pages/recommend/index",
-      "style":{}
+      "path": "pages/recommend/index"
     },
     {
       "path": "pages/category/index"
@@ -52,6 +51,7 @@
     {
       "path": "pages/test/index",
       "style": {
+        "navigationBarTitleText": "测试"
       }
     }
   ],
@@ -126,7 +126,7 @@
       },
       {
         "name": "地址管理",
-        "path": "pages/my/address/index.vue", 
+        "path": "pages/my/address/index", 
         "query": "" 
       },
       {
