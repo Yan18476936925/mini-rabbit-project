@@ -50,7 +50,7 @@
   1 把静态结构给完成了
   2 发送请求 获取 当前登录用户对应的  地址数据
 */
-import { getMemberAddress } from "@/http/address.js";
+import { getMemberAddress,delMemberAddress } from "@/http/address.js";
 export default {
   data() {
     return {
@@ -70,18 +70,38 @@ export default {
   // onLoad 和 onShow区别
   // onLoad 页面开始加载的时候 触发 触发一次
   // onShow 页面重新被看见的时候 触发
-  async onShow() {
-    const result = await getMemberAddress();
-    console.log("62----->getMemberAddress", result);
-    this.addressList = result.result
+  onShow() {
+    this.loadGetMemberAddress()
   },
   methods: {
+    async loadGetMemberAddress(){
+      const result = await getMemberAddress();
+      console.log("62----->getMemberAddress", result);
+      this.addressList = result.result
+    },
     onClick(e){
       console.log('----->点击事件onClick');
     },
     swipeChange(e, index) {
       console.log("滑动事件");
     },
+    async onAddressRemove(id){
+      // 如何在这里 获取到 被删除的地址的id！！！
+      // console.log('----->id',id);
+      // 弹出对话框 询问用户 是否要删除
+      const [err,{confirm}] = await uni.showModal({
+        title:"警告",
+        content:"您确定删除吗"
+      });
+      if (confirm) {
+        // 是 获取id调用接口完成删除
+        await delMemberAddress(id)
+        // 删除成功后，给出用户一个提示
+        uni.showToast({title:"删除成功"})
+        // 获取最新地址数据  更新页面
+        this.loadGetMemberAddress()
+      }
+    }
   },
 };
 </script>

@@ -14,3 +14,14 @@ export const addMemberAddress = (data) => {
     data
   });
 };
+/**
+ * 根据地址id来实现 删除地址
+ * @param {string} id 地址id
+*/
+export const delMemberAddress = (id) => {
+  return http({
+    url: `/member/address/${id}`,
+    method: 'delete'
+  });
+};
+
