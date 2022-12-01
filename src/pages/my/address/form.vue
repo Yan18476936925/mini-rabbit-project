@@ -53,6 +53,9 @@
 <script>
 // 实现表单标签和数据产生联系
 // 省市区 地址的获取 
+
+// 导入 validate对象
+import Schema from "validate";
 export default {
   data() {
     return {
@@ -112,6 +115,65 @@ export default {
     isDefaultChange(e){
       console.log('----->e',e);
       this.form.isDefault = e.detail.value ? 1 : 0
+    }
+    ,
+    submitFrom(){
+      // 1 获取表单数据 this.form
+      // 2 进行表单合法性的验证 ？？  validate.js  库   只要是可以运行js 都可以进行验证   validate - elementui---
+      //   只要是可以运行js 就可以 validate.js   它也是很多的ui框架表单验证 底层
+      // 3 使用
+      // 3.1 安装  npm  i  validate
+      // 3.2 看使用说明即可
+
+      // 新建表单校验对象
+      const addressRule = new Schema({
+        // 姓名
+        receiver: {
+          required: true, // 是不是必填
+          message: {
+            required: "请输入收货人姓名",
+          },
+        },
+        contact:{
+          required: true,// 是不是必填
+          // 指定规则 正则
+          match: /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/,
+          // 针对不同的规则制定 不同的错误提示
+          message: {
+            required: "请输入手机号码",
+            match: "请输入合法的手机号码",
+          },
+        },
+        // 地址编码
+        provinceCode: {
+          required: true,
+          message: "请选择省份",
+        },
+        cityCode: {
+          required: true,
+          message: "请选择城市",
+        },
+        countyCode: {
+          required: true,
+          message: "请选择区/县",
+        },
+        // 详细地址
+        address: {
+          required: true,
+          message: "请输入详细地址",
+        },
+      })
+      // 开始验证
+      const errorList = addressRule.validate(this.form);
+      console.log('----->errorList',errorList);
+      if (errorList[0]) {
+        uni.showToast({ title: errorList[0].message, icon: "none" })
+        return;
+      }
+      // 通过以上的校验 表示没错  正常往下 执行业务
+      console.log("正常执行业务");
+      // 传递参数 调用 新增地址的接口
+      // 成功  弹出提示  返回上一页 ！！
     }
   },
 };

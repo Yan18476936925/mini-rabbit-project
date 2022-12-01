@@ -69,6 +69,7 @@ export default {
   async onLoad() {
     const result = await getMemberAddress();
     console.log("62----->getMemberAddress", result);
+    this.addressList = result.result
   },
   methods: {
     onClick(e){

@@ -1,8 +1,8 @@
-import http from "@/utils/http";
+import http from '@/utils/http';
 
 // 获取收货地址列表
-export const getMemberAddress = ()=>{
+export const getMemberAddress = () => {
   return http({
-    url:'/member/address'
-  })
-}
+    url: '/member/address'
+  });
+};
