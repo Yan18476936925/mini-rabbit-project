@@ -51,6 +51,8 @@
   </view>
 </template>
 <script>
+// 实现表单标签和数据产生联系
+// 省市区 地址的获取 
 export default {
   data() {
     return {
@@ -94,7 +96,24 @@ export default {
         fullLocation: "",
       },
     };
-  }
+  },
+  methods: {
+    // 城市选择事件
+    regionChange(e){
+      // 设置省份相关编码
+      this.form.provinceCode = e.detail.code[0]
+      this.form.cityCode = e.detail.code[1]
+      this.form.countyCode = e.detail.code[2]
+      this.form.postalCode = e.detail.postalCode
+      // 设置中文 地址信息即可
+      this.form.fullLocation = e.detail.value.join("")
+    },
+    // 切换默认地址
+    isDefaultChange(e){
+      console.log('----->e',e);
+      this.form.isDefault = e.detail.value ? 1 : 0
+    }
+  },
 };
 </script>
 
