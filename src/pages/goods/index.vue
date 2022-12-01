@@ -5,7 +5,39 @@
     <!-- 返回按钮 -->
     <scroll-view scroll-y class="viewport">
       <!-- 商品信息 -->
-
+      <view class="goods anchor" data-anchor-index="0">
+        <!-- 轮播图 -->
+        <view class="preview">
+          <swiper autoplay @change="current = $event.detail.current" circular>
+            <swiper-item
+              v-for="(item, index) in goods.mainPictures"
+              :key="index"
+            >
+              <image :src="item" />
+            </swiper-item>
+          </swiper>
+          <!-- 指示器 -->
+          <view class="indicator">
+            <text class="current">{{ current + 1 }}</text>
+            <text class="split">/</text>
+            <text class="total">{{ goods.mainPictures.length }}</text>
+          </view>
+        </view>
+        <!-- 名称和价格 -->
+        <view class="meta">
+          <view class="price">
+            <text class="symbol">¥</text>
+            <text class="number">{{ goods.price }}</text>
+          </view>
+          <view class="brand">
+            <image mode="aspectFill" :src="goods.brand.picture" />
+          </view>
+          <view class="name ellipsis">
+            {{ goods.name }}
+          </view>
+          <view class="remarks"> {{ goods.desc }} </view>
+        </view>
+      </view>
       <!-- 商品评价 - 静态结构 - 没有接口不需要处理 -->
 
       <!-- 商品详情 -->
@@ -23,6 +55,7 @@
   </view>
 </template>
 <script>
+import { getGoodsById } from "@/http/goods.js";
 export default {
   data() {
     return {
@@ -47,6 +80,11 @@ export default {
       uni.navigateBack();
     },
   },
+  async onLoad({id}) {
+    const result = await getGoodsById(id);
+    console.log('85----->getGoodsById', result);
+    this.goods = result.result
+  } 
 };
 </script>
 <style lang="scss">

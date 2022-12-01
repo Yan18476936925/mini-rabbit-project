@@ -1,5 +1,10 @@
 <template>
-  <view class="back icon-left" @click="onTap"></view>
+  <view class="back icon-left" @click="onTap">
+
+
+    
+  </view>
+
 </template>
 
 <script>
