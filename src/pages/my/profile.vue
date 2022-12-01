@@ -109,6 +109,12 @@ export default {
       // 1 动态获取会员信息，然后把信息 存到 vuex中  正常业务
       // 2 考虑到当前页面的业务  memberProfile 只能定义在data中， 同时又想要获取最新的数据 给它
       // fetchProfile 返回一个 最新的会员信息
+
+      // 现在result 是 通过 actions 返回的  也是state中的 会员信息
+      // data中的  memberProfile   完全等于   vuex中存 memberProfile
+      // 两个对象是相等的 内存地址是相等
+      // 所以当我们修改了data中的数据，vuex中的数据 也被直接修改的 ！！
+      // 就出现我们修改data， vuex中的数据也会跟着发生改变
       const result = await this.fetchMemberProfile();
       console.log('88----->fetchMemberProfile', result);
       this.memberProfile = result

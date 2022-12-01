@@ -29,7 +29,8 @@ export default {
     async fetchMemberProfile(context){
       const result = await getMemberProfile();
       context.commit("setMemberProfile",result.result)
-      return result.result
+      // 返回了和vuex中的一样内存地址的数据
+      return {...result.result}// 浅拷贝
     },
   }
 }
