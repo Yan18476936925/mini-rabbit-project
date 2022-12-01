@@ -45,17 +45,16 @@
       </view>
     </view>
     <!-- 提交按钮 -->
-    <view class="button" @tap="submitFrom">
-    保 存
-    </view>
+    <view class="button" @tap="submitFrom"> 保 存 </view>
   </view>
 </template>
 <script>
 // 实现表单标签和数据产生联系
-// 省市区 地址的获取 
+// 省市区 地址的获取
 
 // 导入 validate对象
 import Schema from "validate";
+import { addMemberAddress } from "@/http/address.js";
 export default {
   data() {
     return {
@@ -102,29 +101,27 @@ export default {
   },
   methods: {
     // 城市选择事件
-    regionChange(e){
+    regionChange(e) {
       // 设置省份相关编码
-      this.form.provinceCode = e.detail.code[0]
-      this.form.cityCode = e.detail.code[1]
-      this.form.countyCode = e.detail.code[2]
-      this.form.postalCode = e.detail.postalCode
+      this.form.provinceCode = e.detail.code[0];
+      this.form.cityCode = e.detail.code[1];
+      this.form.countyCode = e.detail.code[2];
+      this.form.postalCode = e.detail.postalCode;
       // 设置中文 地址信息即可
-      this.form.fullLocation = e.detail.value.join("")
+      this.form.fullLocation = e.detail.value.join("");
     },
     // 切换默认地址
-    isDefaultChange(e){
-      console.log('----->e',e);
-      this.form.isDefault = e.detail.value ? 1 : 0
-    }
-    ,
-    submitFrom(){
+    isDefaultChange(e) {
+      console.log("----->e", e);
+      this.form.isDefault = e.detail.value ? 1 : 0;
+    },
+    async submitFrom() {
       // 1 获取表单数据 this.form
       // 2 进行表单合法性的验证 ？？  validate.js  库   只要是可以运行js 都可以进行验证   validate - elementui---
       //   只要是可以运行js 就可以 validate.js   它也是很多的ui框架表单验证 底层
       // 3 使用
       // 3.1 安装  npm  i  validate
       // 3.2 看使用说明即可
-
       // 新建表单校验对象
       const addressRule = new Schema({
         // 姓名
@@ -134,8 +131,8 @@ export default {
             required: "请输入收货人姓名",
           },
         },
-        contact:{
-          required: true,// 是不是必填
+        contact: {
+          required: true, // 是不是必填
           // 指定规则 正则
           match: /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/,
           // 针对不同的规则制定 不同的错误提示
@@ -162,24 +159,27 @@ export default {
           required: true,
           message: "请输入详细地址",
         },
-      })
-      // 开始验证
-      const errorList = addressRule.validate(this.form);
-      console.log('----->errorList',errorList);
+      });
+      // 开始验证  不要直接传递我的数据  浅拷贝 信息的地址  解决 了 validate 自动剔除我们属性的问题
+      const errorList = addressRule.validate({ ...this.form });
+      console.log("----->errorList", errorList);
       if (errorList[0]) {
-        uni.showToast({ title: errorList[0].message, icon: "none" })
+        uni.showToast({ title: errorList[0].message, icon: "none" });
         return;
       }
-      // 通过以上的校验 表示没错  正常往下 执行业务
-      console.log("正常执行业务");
+      console.log("----->this.form", this.form);
+      // 通过以上的校验表示没错 正常往下执行业务
       // 传递参数 调用 新增地址的接口
+      await addMemberAddress(this.form);
       // 成功  弹出提示  返回上一页 ！！
+      uni.showToast({ title: "新增成功" });
+      setTimeout(() => {
+        uni.navigateBack();
+      }, 1000);
     }
   },
 };
 </script>
-
-
 <style lang="scss">
 page {
   background-color: #f4f4f4;

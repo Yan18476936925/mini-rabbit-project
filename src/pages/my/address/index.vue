@@ -12,8 +12,8 @@
           >
             <view class="item">
               <view class="user">
-                {{ item.receiver }}
-                <text>{{ item.contact }}</text>
+                {{ item.receiver  }} 
+                <text class="mingzi">{{ item.contact }}</text>
                 <text v-if="item.isDefault === 1" class="badge"> 默认 </text>
               </view>
               <view class="locate">
@@ -66,7 +66,11 @@ export default {
       ],
     };
   },
-  async onLoad() {
+  // 成功新增地址后，返回了上一页  没有显示最新数据 ？
+  // onLoad 和 onShow区别
+  // onLoad 页面开始加载的时候 触发 触发一次
+  // onShow 页面重新被看见的时候 触发
+  async onShow() {
     const result = await getMemberAddress();
     console.log("62----->getMemberAddress", result);
     this.addressList = result.result
@@ -111,6 +115,9 @@ page {
       font-size: 28rpx;
       margin-bottom: 20rpx;
       color: #333;
+      .mingzi{
+        margin-left: 5px;
+      }
       text {
         color: #666;
       }
