@@ -150,6 +150,37 @@ export default {
       // 重新获取最新的数据
       this.loadData();
     },
+    // 切换商品选中状态
+    async changeCount(skuId, unit) {
+      /* 
+        1 根据skuId 获取 购物车数组中对应下标 
+        2 获取 数组[下标].购买数量，库存
+        3 对数量做修改    -1 或者 +1 
+        4 对修改后的数量做一个判断  
+          小于 1 或者 大于库存 都不合法 
+          合法 才进行参数的拼接 发送请求完成 数量修改 
+      */
+      // 根据skuId来找到它所在数组的下标
+      const index = this.carts.findIndex((v) => v.skuId === skuId);
+      // 获取已经选购的数量 和  库存
+      let { count, stock } = this.carts[index];
+      // 直接对数量做修改
+      count += unit;
+      // 判断
+      if (count < 1) {
+        uni.showToast({ title: "数量不少于1", icon: "none" });
+        return;
+      }
+      if (count > stock) {
+        uni.showToast({ title: "库存不足", icon: "none" });
+        return;
+      }
+      // 拼接参数 发送给后端
+      await putMemberCart(skuId, { count });
+      // 假设成功 给出提示
+      // 重新获取最新的数据
+      this.loadData();
+    },
   },
 };
 </script>
