@@ -37,26 +37,222 @@
           </view>
           <view class="remarks"> {{ goods.desc }} </view>
         </view>
+        <!-- 规格参数 -->
+        <view class="related">
+          <view @tap="openSkuPopup(1)" class="item arrow">
+            <text class="label">选择</text>
+            <text class="text ellipsis">
+              {{ selectArrText || "请选择商品规格" }}
+            </text>
+          </view>
+          <view @tap="showHalfDialog('sku')" class="item arrow">
+            <text class="label">选择</text>
+            <text class="text ellipsis">白色 红外体温计 1件</text>
+          </view>
+          <view @tap="showHalfDialog('shipment')" class="item arrow">
+            <text class="label">送至</text>
+            <text class="text ellipsis">北京市顺义区京顺路9号黑马程序员</text>
+          </view>
+          <view @tap="showHalfDialog('clause')" class="item arrow">
+            <text class="label">服务</text>
+            <text class="text ellipsis">无忧退 快速退款 免费包邮</text>
+          </view>
+        </view>
       </view>
       <!-- 商品评价 - 静态结构 - 没有接口不需要处理 -->
-
+      <view class="comments panel anchor" data-anchor-index="1">
+        <view class="title arrow">
+          <text>评价</text>
+          <navigator url="/pages/comments/index" hover-class="none" class="more"
+            >好评度 70%</navigator
+          >
+        </view>
+        <view class="comment">
+          <view class="caption">
+            <view class="user">
+              <image
+                class="avatar"
+                src="https://static.botue.com/erabbit/static/uploads/avatar_2.jpg"
+              />
+              <text>白月初</text>
+            </view>
+            <view class="rating">
+              <view class="rank" style="width: 80%"></view>
+            </view>
+          </view>
+          <view class="content">
+            <view class="text"> 质量不错，灵敏度高，结构巧妙，款式也好看 </view>
+            <view class="pictures">
+              <view class="picture">
+                <image
+                  src="https://static.botue.com/erabbit/static/uploads/comment_1.jpg"
+                />
+              </view>
+              <view class="picture">
+                <image
+                  src="https://static.botue.com/erabbit/static/uploads/comment_2.jpg"
+                />
+              </view>
+              <view class="picture">
+                <image
+                  src="https://static.botue.com/erabbit/static/uploads/comment_2.jpg"
+                />
+              </view>
+            </view>
+            <view class="extra">
+              <text class="date">购买时间: 2020-11-11</text>
+              <text class="type">黑色 公开版 128G</text>
+            </view>
+          </view>
+        </view>
+        <view class="comment">
+          <view class="caption">
+            <view class="user">
+              <image
+                class="avatar"
+                src="https://static.botue.com/erabbit/static/uploads/avatar_3.jpg"
+              />
+              <text>白月初</text>
+            </view>
+            <view class="rating">
+              <view class="rank" style="width: 60%"></view>
+            </view>
+          </view>
+          <view class="content">
+            <view class="text"> 质量不错，灵敏度高，结构巧妙，款式也好看 </view>
+            <view class="pictures">
+              <view class="picture">
+                <image
+                  src="https://static.botue.com/erabbit/static/uploads/comment_1.jpg"
+                />
+              </view>
+              <view class="picture">
+                <image
+                  src="https://static.botue.com/erabbit/static/uploads/comment_2.jpg"
+                />
+              </view>
+              <view class="picture">
+                <image
+                  src="https://static.botue.com/erabbit/static/uploads/comment_2.jpg"
+                />
+              </view>
+              <view class="picture">
+                <image
+                  src="https://static.botue.com/erabbit/static/uploads/comment_1.jpg"
+                />
+              </view>
+            </view>
+            <view class="extra">
+              <text class="date">购买时间: 2020-11-11</text>
+              <text class="type">黑色 公开版 128G</text>
+            </view>
+          </view>
+        </view>
+      </view>
       <!-- 商品详情 -->
+      <view class="detail panel anchor" data-anchor-index="2">
+        <view class="title">
+          <text>详情</text>
+        </view>
+        <view class="content">
+          <view class="properties">
+            <!-- 商品详情属性 -->
+            <view
+              class="item"
+              v-for="item in goods.details.properties"
+              :key="item.name"
+            >
+              <text class="label">{{ item.name }}</text>
+              <text class="value">{{ item.value }}</text>
+            </view>
+          </view>
 
+          <!-- 商品详情图片 -->
+          <image
+            mode="widthFix"
+            v-for="(item, index) in goods.details.pictures"
+            :key="index"
+            :src="item"
+          ></image>
+        </view>
+      </view>
       <!-- 常见问题 -->
-
+      <view class="help arrow" @click="showHalfDialog('helps')">
+        <text class="icon-help"></text>
+        <view hover-class="none">常见问题</view>
+      </view>
       <!-- 推荐 -->
+      <view class="recommend panel anchor" data-anchor-index="3">
+        <view class="title">
+          <text>推荐</text>
+        </view>
+        <view class="content">
+          <navigator
+            v-for="item in goodsRelevants"
+            :key="item.id"
+            :url="`/pages/goods/index?id=${item.id}`"
+            hover-class="none"
+          >
+            <image class="image" mode="aspectFit" :src="item.picture"></image>
+            <view class="name ellipsis">
+              {{ item.name }}
+            </view>
+            <view class="price">
+              <text class="symbol">¥</text>
+              <text class="number">{{ item.price }}</text>
+            </view>
+          </navigator>
+        </view>
+      </view>
     </scroll-view>
-
     <!-- 用户操作 -->
-
+    <view class="toolbar">
+      <view class="icons">
+        <button class="collect"><text class="icon-heart"></text>收藏</button>
+        <button class="contact" open-type="contact">
+          <text class="icon-handset"></text>客服
+        </button>
+        <button class="cart" @click="goCart">
+          <text class="icon-cart"></text>购物车
+        </button>
+      </view>
+      <view class="buttons">
+        <view @click="openSkuPopup(2)" data-button-type="cart" class="addcart">
+          加入购物车
+        </view>
+        <view
+          @click="openSkuPopup(3)"
+          data-button-type="payment"
+          class="payment"
+        >
+          立即购买
+        </view>
+      </view>
+    </view>
     <!-- 弹出层 -->
-
-    <!-- SKU -->
+    <uni-popup ref="popup" type="bottom" background-color="#fff">
+      <view class="popup-root">
+        <Sku v-if="layer === 'sku'"></Sku>
+        <Shipment v-if="layer === 'shipment'"></Shipment>
+        <Clause v-if="layer === 'clause'"></Clause>
+        <Helps v-if="layer === 'helps'"></Helps>
+      </view>
+    </uni-popup>
   </view>
 </template>
 <script>
-import { getGoodsById } from "@/http/goods.js";
+import { getGoodsById, getGoodsRelevant } from "@/http/goods.js";
+import Sku from "./components/Sku/index.vue";
+import Shipment from "./components/Shipment/index.vue";
+import Clause from "./components/Clause/index.vue";
+import Helps from "./components/Helps/index.vue";
 export default {
+  components: {
+    Sku,
+    Shipment,
+    Clause,
+    Helps,
+  },
   data() {
     return {
       // 商品详情
@@ -66,7 +262,7 @@ export default {
       // 轮播图下标
       current: 0,
       // 弹出层显示的组件名称
-      layer: "helps",
+      layer: "Sku",
       // SKU组件的属性
       skuMode: 1,
       // 是否显示SKU组件
@@ -80,11 +276,28 @@ export default {
       uni.navigateBack();
     },
   },
-  async onLoad({id}) {
-    const result = await getGoodsById(id);
-    console.log('85----->getGoodsById', result);
-    this.goods = result.result
-  } 
+  onLoad({ id }) {
+    getGoodsById(id).then((result) => {
+      this.goods = result.result;
+    });
+    // // 获取同类推荐
+    getGoodsRelevant({ id }).then((result) => {
+      console.log("198----->getGoodsRelevant", result);
+      this.goodsRelevants = result.result;
+    });
+  },
+  methods: {
+    showHalfDialog(type) {
+      // 显示弹出层
+      this.$refs.popup.open();
+      // 设置有显示的弹出层中的组件 sku shipment clause helps
+      this.layer = type;
+    },
+    // 隐藏弹出层
+    hideHalfDialog() {
+      this.$refs.popup.close();
+    },
+  },
 };
 </script>
 <style lang="scss">
