@@ -232,12 +232,22 @@
     <!-- 弹出层 -->
     <uni-popup ref="popup" type="bottom" background-color="#fff">
       <view class="popup-root">
+        <text @click="hideHalfDialog" class="close icon-close"></text>
         <Sku v-if="layer === 'sku'"></Sku>
         <Shipment v-if="layer === 'shipment'"></Shipment>
         <Clause v-if="layer === 'clause'"></Clause>
         <Helps v-if="layer === 'helps'"></Helps>
       </view>
     </uni-popup>
+    <!-- SKU -->
+    <vk-data-goods-sku-popup
+      v-model="isShowSku"
+      :mode="skuMode"
+      :localdata="goodsSku"
+      ref="skuRef"
+      @add-cart="onAddCart"
+      @buy-now="onBuyNow"
+    />
   </view>
 </template>
 <script>
@@ -263,18 +273,13 @@ export default {
       current: 0,
       // 弹出层显示的组件名称
       layer: "Sku",
-      // SKU组件的属性
-      skuMode: 1,
       // 是否显示SKU组件
       isShowSku: false,
+      // SKU组件的属性
+      skuMode: 1,
       // SKU 商品数据
       goodsSku: null,
     };
-  },
-  methods: {
-    onTap() {
-      uni.navigateBack();
-    },
   },
   onLoad({ id }) {
     getGoodsById(id).then((result) => {
@@ -285,8 +290,56 @@ export default {
       console.log("198----->getGoodsRelevant", result);
       this.goodsRelevants = result.result;
     });
+    // 设置sku组件需要用到的数据
+    this.goodsSku = {
+      _id: "002",
+      name: "迪奥香水",
+      goods_thumb:
+        "https://res.lancome.com.cn/resources/2020/9/11/15998112890781924_920X920.jpg?version=20200917220352530",
+      sku_list: [
+        {
+          _id: "004",
+          goods_id: "002",
+          goods_name: "迪奥香水",
+          image:
+            "https://res.lancome.com.cn/resources/2020/9/11/15998112890781924_920X920.jpg?version=20200917220352530",
+          price: 19800,
+          sku_name_arr: ["50ml/瓶"],
+          stock: 100,
+        },
+        {
+          _id: "005",
+          goods_id: "002",
+          goods_name: "迪奥香水",
+          image:
+            "https://res.lancome.com.cn/resources/2020/9/11/15998112890781924_920X920.jpg?version=20200917220352530",
+          price: 9800,
+          sku_name_arr: ["70ml/瓶"],
+          stock: 100,
+        },
+      ],
+      spec_list: [
+        {
+          list: [
+            {
+              name: "20ml/瓶",
+            },
+            {
+              name: "50ml/瓶",
+            },
+            {
+              name: "70ml/瓶",
+            },
+          ],
+          name: "规格",
+        },
+      ],
+    };
   },
   methods: {
+    onTap() {
+      uni.navigateBack();
+    },
     showHalfDialog(type) {
       // 显示弹出层
       this.$refs.popup.open();
@@ -296,6 +349,13 @@ export default {
     // 隐藏弹出层
     hideHalfDialog() {
       this.$refs.popup.close();
+    },
+    // 用来显示sku组件
+    openSkuPopup(skuMode) {
+      // 只显示 加入购物车按钮
+      this.skuMode = skuMode;
+      // 如何显示 sku组件
+      this.isShowSku = true;
     },
   },
 };
