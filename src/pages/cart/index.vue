@@ -112,9 +112,16 @@ export default {
   computed: {
     ...mapState("user", ["profile"]),
     // 勾选了的购物车数组
-    selectedCarts() {},
+    selectedCarts() {
+      return this.carts.filter((item)=> item.selected)
+    },
     // 是否全选
-    isSelectedAll() {},
+    isSelectedAll() {
+      // 获取 购物车数量 this.carts.length    购物车选中的商品数量  this.carts.filter(v=>v.selected).length
+      // 两个数量做比较 如果相等 就设置全选
+      // 如果购物车长度为 0  也会返回true  但是 我们已经提前在 标签中进行过处理
+      return this.carts.length === this.selectedCarts.length;
+    },
     // 勾选的商品总价
     selectedCartsPrice() {},
     // 勾选的商品熟练
