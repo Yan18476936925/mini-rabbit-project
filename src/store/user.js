@@ -22,7 +22,7 @@ export default {
     // 异步执行登录 获取用户信息
     async fetchProfile(context,data){
       const result = await addLoginWxminSimple(data);
-      // console.log('25----->addLoginWxmin', result);
+      console.log('25----->获取用户信息', result);
       context.commit("setProfile",result.result)
     },
     // 异步获取会员信息
@@ -31,6 +31,6 @@ export default {
       context.commit("setMemberProfile",result.result)
       // 返回了和vuex中的一样内存地址的数据
       return {...result.result}// 浅拷贝
-    },
+    }
   }
 }

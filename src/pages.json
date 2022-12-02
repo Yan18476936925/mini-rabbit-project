@@ -152,6 +152,11 @@
         "query": "id=1667068" 
       },
       {
+        "name": "购物车",
+        "path": "pages/cart/index",
+        "query": ""
+      },
+      {
         "name": "test",
         "path": "pages/test/profile", 
         "query": "" 

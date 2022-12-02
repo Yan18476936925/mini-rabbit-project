@@ -72,7 +72,7 @@ export default {
     //   });
     //   console.log('74----->addLoginWxmin', result);
     // },
-    ...mapActions("user",["fetchProfile"],["fetchMemberProfile"]),
+    ...mapActions("user",["fetchProfile","fetchMemberProfile"]),
     // 获取手机号码的事件回调函数
     async handleGetPhoneNumber2(){
       await this.fetchProfile({

@@ -1,15 +1,16 @@
 <template>
   <view class="back icon-left" @click="onTap">
-
-
-    
   </view>
 
 </template>
 
 <script>
 export default {
-
+  methods: {
+  onTap() {
+      uni.navigateBack();
+    },
+  },
 };
 </script>
 
