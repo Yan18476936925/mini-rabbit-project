@@ -284,57 +284,33 @@ export default {
   onLoad({ id }) {
     getGoodsById(id).then((result) => {
       this.goods = result.result;
+      // 设置sku组件需要用到的数据
+      this.goodsSku = {
+        _id: this.goods.id,
+        name: this.goods.name,
+        goods_thumb: this.goods.mainPictures[0],
+        sku_list: this.goods.skus.map((item) => ({
+          _id: item.skuCode,
+          goods_id: item.id,
+          goods_name: this.goods.name,
+          image: this.goods.mainPictures[0],
+          price: item.price,
+          sku_name_arr: ["默认"],
+          stock: item.inventory,
+        })),
+        spec_list: this.goods.specs.map((item)=>({
+          name: item.name,
+          list: item.values.map((item2)=>({
+            name:item2.name
+          })),
+        })),
+      };
     });
-    // // 获取同类推荐
+    // 获取同类推荐
     getGoodsRelevant({ id }).then((result) => {
       console.log("198----->getGoodsRelevant", result);
       this.goodsRelevants = result.result;
     });
-    // 设置sku组件需要用到的数据
-    this.goodsSku = {
-      _id: "002",
-      name: "迪奥香水",
-      goods_thumb:
-        "https://res.lancome.com.cn/resources/2020/9/11/15998112890781924_920X920.jpg?version=20200917220352530",
-      sku_list: [
-        {
-          _id: "004",
-          goods_id: "002",
-          goods_name: "迪奥香水",
-          image:
-            "https://res.lancome.com.cn/resources/2020/9/11/15998112890781924_920X920.jpg?version=20200917220352530",
-          price: 19800,
-          sku_name_arr: ["50ml/瓶"],
-          stock: 100,
-        },
-        {
-          _id: "005",
-          goods_id: "002",
-          goods_name: "迪奥香水",
-          image:
-            "https://res.lancome.com.cn/resources/2020/9/11/15998112890781924_920X920.jpg?version=20200917220352530",
-          price: 9800,
-          sku_name_arr: ["70ml/瓶"],
-          stock: 100,
-        },
-      ],
-      spec_list: [
-        {
-          list: [
-            {
-              name: "20ml/瓶",
-            },
-            {
-              name: "50ml/瓶",
-            },
-            {
-              name: "70ml/瓶",
-            },
-          ],
-          name: "规格",
-        },
-      ],
-    };
   },
   methods: {
     onTap() {
