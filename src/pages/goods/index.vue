@@ -42,7 +42,7 @@
           <view @tap="openSkuPopup(1)" class="item arrow">
             <text class="label">选择</text>
             <text class="text ellipsis">
-              {{ selectArrText || "请选择商品规格" }}
+              {{ selectArrText }}
             </text>
           </view>
           <view @tap="showHalfDialog('sku')" class="item arrow">
@@ -247,10 +247,12 @@
       ref="skuRef"
       @add-cart="onAddCart"
       @buy-now="onBuyNow"
+      :amount-type="0"
     />
   </view>
 </template>
 <script>
+import { addMemberCart } from "@/http/cart.js";
 import { getGoodsById, getGoodsRelevant } from "@/http/goods.js";
 import Sku from "./components/Sku/index.vue";
 import Shipment from "./components/Shipment/index.vue";
@@ -279,6 +281,7 @@ export default {
       skuMode: 1,
       // SKU 商品数据
       goodsSku: null,
+      selectArrText: "请选择商品规格",
     };
   },
   onLoad({ id }) {
@@ -286,22 +289,36 @@ export default {
       this.goods = result.result;
       // 设置sku组件需要用到的数据
       this.goodsSku = {
+        // id  商品的id
         _id: this.goods.id,
+        // name 商品的名称
         name: this.goods.name,
+        // goods_thumb  商品的缩略图
         goods_thumb: this.goods.mainPictures[0],
+        // sku_list sku数组
         sku_list: this.goods.skus.map((item) => ({
+          // _id sku编号
           _id: item.skuCode,
+          // goods_id 当前库存商品（黑色、36）的id
           goods_id: item.id,
+          // goods_name 商品名称
           goods_name: this.goods.name,
+          // sku 商品的图片
           image: this.goods.mainPictures[0],
+          // 价格
           price: item.price,
-          sku_name_arr: ["默认"],
+          // 当前sku商品对应的规格 所组成数组
+          sku_name_arr: item.specs.map((vv) => vv.valueName),
+          // 库存
           stock: item.inventory,
         })),
-        spec_list: this.goods.specs.map((item)=>({
+        // 规格参数数组
+        spec_list: this.goods.specs.map((item) => ({
+          // 尺码  参数的统称
           name: item.name,
-          list: item.values.map((item2)=>({
-            name:item2.name
+          // 颜色 对应  颜色数组  [红色、黑色、白色]
+          list: item.values.map((item2) => ({
+            name: item2.name,
           })),
         })),
       };
@@ -333,6 +350,28 @@ export default {
       // 如何显示 sku组件
       this.isShowSku = true;
     },
+    async onAddCart(selectShop) {
+      // console.log("----->skuRef", this.$refs.skuRef);
+      // console.log("----->selectShop", selectShop);
+      this.selectArrText = selectShop.sku_name_arr.join(" ");
+      this.isShowSku = false;
+      // 把 商品 添加到 购物车上    -  调用接口来添加商品到购物车
+      const data = {
+        skuId:selectShop._id,
+        count:selectShop.buy_num
+      }
+      // 调用添加接口实现添加
+      const result = await addMemberCart(data);
+      console.log('363----->addMemberCart', result);
+      uni.showToast({ title: "加入购物车成功" })
+    },
+    // 跳转到购物车
+    goCart(){
+      // 原生微信小程序 导航标签 跳转的页面  根据页面 tabbar类型 设置open-type
+      // uni.navigateTo({ url: "/pages/cart/index" });
+      uni.switchTab({ url: "/pages/cart/index" }); // 跳转到 tabbar页面
+    },
+    onBuyNow() {},
   },
 };
 </script>
