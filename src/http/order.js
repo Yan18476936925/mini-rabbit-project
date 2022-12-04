@@ -14,3 +14,9 @@ export const postMembeOrder = (data) => {
     data
   });
 };
+// 根据订单id来查阅订单详情
+export const getMembeOrderById = (id) => {
+  return http({
+    url: `/member/order/${id}`,
+  });
+};

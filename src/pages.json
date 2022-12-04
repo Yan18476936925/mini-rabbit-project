@@ -69,7 +69,8 @@
     {
       "path": "pages/order/detail",
       "style": {
-        "navigationStyle": "custom"
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "white"
       }
     },
     {

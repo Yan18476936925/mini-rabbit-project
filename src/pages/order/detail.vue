@@ -11,7 +11,21 @@
     <!-- 内容 -->
     <scroll-view class="viewport" scroll-y>
       <!-- 订单状态 -->
-
+      <view class="overview" :style="{ paddingTop: safeArea.top + 40 + 'px' }">
+        <template v-if="order.orderState === OrderState.DaiFuKuan">
+          <view class="status icon-clock">等待付款</view>
+          <view class="tips">
+            <text>应付金额: ¥{{ order.payMoney }}</text>
+            <text class="countdown"> 支付剩余 {{ countdown }} </text>
+          </view>
+          <view @tap="orderPay" class="button">去支付</view>
+        </template>
+        <template v-else>
+          <view class="status icon-clock">
+            {{ OrderStateOptions[order.orderState] }}
+          </view>
+        </template>
+      </view>
       <!-- 商品信息 -->
 
       <!-- 订单信息 -->
@@ -22,12 +36,35 @@
 </template>
 <script>
 import { mapState } from "vuex";
+import { getMembeOrderById } from "@/http/order.js";
+import {
+  OrderState,
+  PayType,
+  PayChannel,
+  OrderStateOptions,
+} from "./OrderConstance.js";
 export default {
+  data() {
+    return {
+      // 订单信息
+      order: null,
+      // 订单状态
+      OrderState,
+      // 支付方式
+      PayType,
+      // 支付渠道
+      PayChannel,
+      // 订单状态描述
+      OrderStateOptions,
+    };
+  },
   computed: {
     ...mapState(["safeArea", "platform"]),
   },
-  onLoad({ id }) {
-    console.log("----->id", id);
+  async onLoad({ id }) {
+    const result = await getMembeOrderById(id);
+    console.log('----->getMembeOrderById', result);
+    this.order = result.result
   },
 };
 </script>
