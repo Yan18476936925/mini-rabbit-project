@@ -124,9 +124,11 @@ export default {
     },
     // 勾选的商品总价
     selectedCartsPrice() {
+      return this.selectedCarts.reduce((s,v)=> s + v.price * v.count,0)
     },
     // 勾选的商品熟练
     selectedCartsCount() {
+      return this.selectedCarts.reduce((s,v)=> s + v.count,0)
     },
   },
   data() {
