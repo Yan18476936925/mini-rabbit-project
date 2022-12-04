@@ -10,7 +10,7 @@
             :key="item.id"
             class="swipe-cell"
           >
-            <view class="item">
+            <view class="item" @click="onChooseAddress(item)">
               <view class="user">
                 {{ item.receiver  }} 
                 <text class="mingzi">{{ item.contact }}</text>
@@ -24,6 +24,7 @@
                 :url="`./form?id=${item.id}`"
                 class="edit"
                 hover-class="none"
+                @click.stop="()=>{}"
               >
                 修改
               </navigator>
@@ -51,6 +52,7 @@
   2 发送请求 获取 当前登录用户对应的  地址数据
 */
 import { getMemberAddress,delMemberAddress } from "@/http/address.js";
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -74,6 +76,7 @@ export default {
     this.loadGetMemberAddress()
   },
   methods: {
+    ...mapMutations('address',["setSelectedAddress"]),
     async loadGetMemberAddress(){
       const result = await getMemberAddress();
       // console.log("62----->getMemberAddress", result);
@@ -95,6 +98,10 @@ export default {
         // 获取最新地址数据  更新页面
         this.loadGetMemberAddress()
       }
+    },
+    onChooseAddress(item){
+      this.setSelectedAddress(item)
+      uni.navigateBack();
     }
   },
 };
