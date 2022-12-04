@@ -28,3 +28,14 @@ export const putMemberCart = (id, data) => {
     data,
   });
 };
+/**
+ * 设置商品全选和取消全选
+ * @param {Object} data selected 和 ids (skuId 数组)
+*/
+export const putMemberCartSelected = (data) => {
+  return http({
+    url: `/member/cart/selected`,
+    method: 'put',
+    data,
+  });
+};

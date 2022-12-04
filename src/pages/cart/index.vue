@@ -107,7 +107,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { getMemberCart, putMemberCart } from "@/http/cart";
+import { getMemberCart, putMemberCart,putMemberCartSelected } from "@/http/cart";
 export default {
   computed: {
     ...mapState("user", ["profile"]),
@@ -123,9 +123,11 @@ export default {
       return this.carts.length === this.selectedCarts.length;
     },
     // 勾选的商品总价
-    selectedCartsPrice() {},
+    selectedCartsPrice() {
+    },
     // 勾选的商品熟练
-    selectedCartsCount() {},
+    selectedCartsCount() {
+    },
   },
   data() {
     return {
@@ -133,7 +135,7 @@ export default {
       carts: [],
     };
   },
-  onLoad() {
+  onShow() {
     // 先判断有没有登录信息 才去发送请求
     if (this.profile) {
       // 发送请求获取购物车数组
@@ -188,6 +190,17 @@ export default {
       // 重新获取最新的数据
       this.loadData();
     },
+    // 设置全部商品的选中的取消选中
+    async changeSelectedAll(){
+      // 获取当前全选状态，然后取反
+      const selected = !this.isSelectedAll
+      // 获取 skuId 集合
+      const ids = this.carts.map((item)=> item.skuId)
+      // 调用接口 设置全选/不全选
+      await putMemberCartSelected({selected,ids})
+      // 刷新页面数据
+      this.loadData()
+    }
   },
 };
 </script>
