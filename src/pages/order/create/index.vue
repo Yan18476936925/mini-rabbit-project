@@ -187,7 +187,7 @@ export default {
       uni.showToast({ title: "订单创建成功" });
       setTimeout(() => {
         console.log("跳转到订单详情");
-        uni.navigateTo({ url: "/pages/order/detail" }); // 还没有创建
+        uni.navigateTo({ url: "/pages/order/detail?id=" + result.result.id }); // 还没有创建
       }, 1500);
     }
   },

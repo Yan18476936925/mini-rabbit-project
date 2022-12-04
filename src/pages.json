@@ -67,6 +67,12 @@
       }
     },
     {
+      "path": "pages/order/detail",
+      "style": {
+        "navigationBarTitleText": "订单详情"
+      }
+    },
+    {
       "path": "pages/test/index",
       "style": {
         "navigationBarTitleText": "测试"
@@ -166,6 +172,11 @@
         "name": "填写订单",
         "path": "pages/order/create/index",
         "query": ""
+      },
+      {
+        "name": "订单详情",
+        "path": "pages/order/detail",
+        "query": "id=1599291219597332482"
       },
       {
         "name": "test",
