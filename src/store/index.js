@@ -11,6 +11,7 @@ const store = new Vuex.Store({
   state: {
     safeArea: uni.getSystemInfoSync().safeArea,// 获取系统信息
     bounding: uni.getMenuButtonBoundingClientRect(), //获取胶囊信息
+    platform: uni.getSystemInfoSync().platform,  // 手机平台
   },
   mutations: { },
   getters: {},
