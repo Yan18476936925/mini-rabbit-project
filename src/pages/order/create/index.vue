@@ -113,7 +113,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { getMembeOrderPre } from "@/http/order.js";
+import { getMembeOrderPre,postMembeOrder } from "@/http/order.js";
 export default {
   computed: {
     ...mapState("address", ["selectedAddress"]),
@@ -152,10 +152,44 @@ export default {
       buyerMessage: "",
     };
   },
-  async onLoad() {
+  async onShow() {
     const result = await getMembeOrderPre();
     console.log('----->99',getMembeOrderPre);
     this.orderPre = result.result;
+  },
+  methods: {
+    async submitForm(){
+      // 判断有没有收货地址
+      if (!this.selectedAddress) {
+        return uni.showToast({ title: "您还没有选择地址", icon: "none" });
+      }
+      // 拼接参数 来创建订单 postMembeOrder
+      const data = {
+        //  所选地址Id
+        addressId: this.selectedAddress.id,
+        //  买家留言
+        buyerMessage: this.buyerMessage,
+        //  配送时间类型，1为不限，2为工作日，3为双休或假日
+        deliveryTimeType: 1,
+        //  商品集合[ 商品信息 ]
+        goods: this.orderPre.goods.map((v) => ({
+          skuId: v.skuId,
+          count: v.count,
+        })),
+        //  支付渠道：支付渠道，1支付宝、2微信--支付方式为在线支付时，传值，为货到付款时，不传值
+        payChannel: 2,
+        //  支付方式，1为在线支付，2为货到付款
+        payType: 1,
+      }
+      const result = await postMembeOrder(data);
+      console.log('185----->postMembeOrder', result);
+      // 创建成功 跳转到 订单详情页面
+      uni.showToast({ title: "订单创建成功" });
+      setTimeout(() => {
+        console.log("跳转到订单详情");
+        uni.navigateTo({ url: "/pages/order/detail" }); // 还没有创建
+      }, 1500);
+    }
   },
 };
 </script>
