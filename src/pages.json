@@ -61,6 +61,12 @@
       }
     },
     {
+      "path": "pages/order/create/index",
+      "style": {
+        "navigationBarTitleText": "填写订单"
+      }
+    },
+    {
       "path": "pages/test/index",
       "style": {
         "navigationBarTitleText": "测试"
@@ -154,6 +160,11 @@
       {
         "name": "购物车",
         "path": "pages/cart/index",
+        "query": ""
+      },
+      {
+        "name": "填写订单",
+        "path": "pages/order/create/index",
         "query": ""
       },
       {

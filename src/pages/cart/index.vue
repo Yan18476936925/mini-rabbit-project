@@ -107,13 +107,17 @@
 
 <script>
 import { mapState } from "vuex";
-import { getMemberCart, putMemberCart,putMemberCartSelected } from "@/http/cart";
+import {
+  getMemberCart,
+  putMemberCart,
+  putMemberCartSelected,
+} from "@/http/cart";
 export default {
   computed: {
     ...mapState("user", ["profile"]),
     // 勾选了的购物车数组
     selectedCarts() {
-      return this.carts.filter((item)=> item.selected)
+      return this.carts.filter((item) => item.selected);
     },
     // 是否全选
     isSelectedAll() {
@@ -124,11 +128,11 @@ export default {
     },
     // 勾选的商品总价
     selectedCartsPrice() {
-      return this.selectedCarts.reduce((s,v)=> s + v.price * v.count,0)
+      return this.selectedCarts.reduce((s, v) => s + v.price * v.count, 0);
     },
     // 勾选的商品熟练
     selectedCartsCount() {
-      return this.selectedCarts.reduce((s,v)=> s + v.count,0)
+      return this.selectedCarts.reduce((s, v) => s + v.count, 0);
     },
   },
   data() {
@@ -193,15 +197,22 @@ export default {
       this.loadData();
     },
     // 设置全部商品的选中的取消选中
-    async changeSelectedAll(){
+    async changeSelectedAll() {
       // 获取当前全选状态，然后取反
-      const selected = !this.isSelectedAll
+      const selected = !this.isSelectedAll;
       // 获取 skuId 集合
-      const ids = this.carts.map((item)=> item.skuId)
+      const ids = this.carts.map((item) => item.skuId);
       // 调用接口 设置全选/不全选
-      await putMemberCartSelected({selected,ids})
+      await putMemberCartSelected({ selected, ids });
       // 刷新页面数据
-      this.loadData()
+      this.loadData();
+    },
+    // 去结算
+    goToOrderCreate(){
+      if (this.selectedCartsCount === 0) {
+        return uni.showToast({title:"请选择下单商品",icon:"none"})
+      }
+      uni.navigateTo({url:'/pages/order/create/index'})
     }
   },
 };
