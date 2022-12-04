@@ -114,20 +114,27 @@ export default {
   },
   methods: {
     // 加载订单数据  给orderList 第一次 赋值的时候使用
+    // 根据当前选中的下标 来切换 要操作的对象
     async loadGetMemberOrder(){
       const data = {
         page: 1,
         pageSize: 6,
-        orderState: OrderState.QuanBu, // 全部
+        // orderState: OrderState.QuanBu, // 全部
+        orderState: this.orderTabs[this.activeIndex].orderState,
       }
       const result = await getMemberOrder(data);
       console.log('120----->getMemberOrder', result);
       // 把数据 设置到  orderList 中
       // this.orderList[0] = result.result
-      this.$set(this.orderList,0,result.result)
+      this.$set(this.orderList,this.activeIndex,result.result)
     },
      // 轮播组件切换事件
-    swiperChange(){}
+    swiperChange(e){
+      // 1 设置 activeIndex 下标
+      this.activeIndex = e.detail.current;
+      // 2 发送请求 获取数据
+      this.loadGetMemberOrder()
+    }
   },
 };
 </script>
