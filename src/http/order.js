@@ -1,4 +1,4 @@
-import http from "@/utils/http";
+import http from '@/utils/http';
 
 // 获取预付订单列表
 export const getMembeOrderPre = () => {
@@ -10,8 +10,8 @@ export const getMembeOrderPre = () => {
 export const postMembeOrder = (data) => {
   return http({
     url: `/member/order`,
-    method: "post",
-    data
+    method: 'post',
+    data,
   });
 };
 // 根据订单id来查阅订单详情
@@ -26,18 +26,26 @@ export const getMembeOrderById = (id) => {
  * @param {String} orderId 订单did
  */
 export const getPayWxPayMiniPay = (orderId) => {
-  return http({ 
-    url: `/pay/wxPay/miniPay`, 
-    data: { orderId } 
+  return http({
+    url: `/pay/wxPay/miniPay`,
+    data: { orderId },
   });
 };
 /**
  * 传递订单id来  模拟真正的微信支付
  * @param {String} orderId 订单did
  */
-export const getPayMock  = (orderId) => {
-  return http({ 
-    url: `/pay/mock`, 
-    data: { orderId } 
+export const getPayMock = (orderId) => {
+  return http({
+    url: `/pay/mock`,
+    data: { orderId },
   });
+};
+
+/**
+ * 获取订单列表
+ * @param {Object} data page-页码 pageSize-页容量 orderState - 订单状态，0全部订单 1为待付款、2为待发货、3为待收货、4为待评价、5为已完成、6为已取消
+ */
+export const getMemberOrder = (data) => {
+  return http({ url: `/member/order`, data });
 };

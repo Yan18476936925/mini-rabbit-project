@@ -69,6 +69,8 @@
 </template>
 
 <script>
+import { getMemberOrder } from "@/http/order.js";
+import { OrderState } from "./OrderConstance.js";
 export default {
   data() {
     return {
@@ -106,6 +108,26 @@ export default {
   computed: {
     // 当前显示的订单数据
     currentOrder() {},
+  },
+  onLoad(options) {
+    this.loadGetMemberOrder()
+  },
+  methods: {
+    // 加载订单数据  给orderList 第一次 赋值的时候使用
+    async loadGetMemberOrder(){
+      const data = {
+        page: 1,
+        pageSize: 6,
+        orderState: OrderState.QuanBu, // 全部
+      }
+      const result = await getMemberOrder(data);
+      console.log('120----->getMemberOrder', result);
+      // 把数据 设置到  orderList 中
+      // this.orderList[0] = result.result
+      this.$set(this.orderList,0,result.result)
+    },
+     // 轮播组件切换事件
+    swiperChange(){}
   },
 };
 </script>
