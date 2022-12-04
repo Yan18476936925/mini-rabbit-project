@@ -27,20 +27,86 @@
         </template>
       </view>
       <!-- 商品信息 -->
-
+      <!-- 商品信息 -->
+      <view class="goods">
+        <view class="item">
+          <navigator
+            v-for="item in order.skus"
+            :key="item.id"
+            :url="`/pages/goods/index?id=${item.spuId}`"
+            hover-class="none"
+          >
+            <image class="cover" :src="item.image"></image>
+            <view class="meta">
+              <view class="name ellipsis">{{ item.name }}</view>
+              <view class="type">{{ item.attrsText }}</view>
+              <view class="price">
+                <view class="original">
+                  <text class="symbol">¥</text>
+                  <text>{{ item.curPrice }}</text>
+                </view>
+                <view class="actual">
+                  <text class="text">实付: </text>
+                  <text class="symbol">¥</text>
+                  <text>{{ item.realPay }}</text>
+                </view>
+              </view>
+              <view class="quantity">x{{ item.quantity }}</view>
+            </view>
+          </navigator>
+          <view
+            class="action"
+            v-if="order.orderState === OrderState.YiWanCheng"
+          >
+            <view class="button primary">申请售后</view>
+            <navigator url="/pages/comments/publish/index" class="button">
+              去评价
+            </navigator>
+          </view>
+        </view>
+        <!-- 合计 -->
+        <view class="total">
+          <view class="row">
+            <view class="text">商品总价: </view>
+            <view class="symbol">{{ order.totalMoney }}</view>
+          </view>
+          <view class="row">
+            <view class="text">运费: </view>
+            <view class="symbol">{{ order.postFee }}</view>
+          </view>
+          <view class="row paid">
+            <view class="text">实付: </view>
+            <view class="symbol primary">{{ order.payMoney }}</view>
+          </view>
+        </view>
+      </view>
       <!-- 订单信息 -->
+      <!-- 订单信息 -->
+      <view class="detail">
+        <view class="title">订单信息</view>
+        <view class="row">
+          <view>订单编号: {{ order.id }}</view>
+          <view>下单时间: {{ order.createTime }}</view>
+          <view v-if="order.payType === PayType.Online">
+            支付方式: 在线支付
+          </view>
+          <view v-if="order.payChannel == PayChannel.WxPay">
+            支付渠道: 微信支付
+          </view>
+        </view>
+      </view>
     </scroll-view>
 
     <!-- 底部工具 -->
-    <!-- <view class="toobar" v-if="order.orderState === OrderState.DaiFuKuan">
+    <view class="toobar" v-if="order.orderState === OrderState.DaiFuKuan">
       <view @tap="orderPay" class="primary">去支付</view>
       <view class="default">取消订单</view>
-    </view> -->
+    </view>
   </view>
 </template>
 <script>
 import { mapState } from "vuex";
-import { getMembeOrderById } from "@/http/order.js";
+import { getMembeOrderById, getPayWxPayMiniPay, getPayMock } from "@/http/order.js";
 import {
   OrderState,
   PayType,
@@ -71,13 +137,13 @@ export default {
       // 自己做转换 或者 使用第三方日期库 dayjs
       if (this.order) {
         return unix(this.order.countdown).format("mm分ss秒");
-      }else{
-        return `00分00秒`
+      } else {
+        return `00分00秒`;
       }
     },
   },
   async onLoad({ id }) {
-    console.log('----->id',id);
+    console.log("----->id", id);
     const result = await getMembeOrderById(id);
     console.log("getMembeOrderById----->75", result);
     this.order = result.result;
@@ -97,6 +163,34 @@ export default {
         }
       }, 1000);
     }
+  },
+  methods: {
+    onTap() {
+      uni.navigateBack();
+    },
+    // 点击去支付
+    async orderPay() {
+      try {
+        // 1 把订单编号 发送给后端，获取 微信支付相关的参数
+        const result = await getPayWxPayMiniPay(this.order.id);
+        console.log('171----->getPayWxPayMiniPay', result);
+        // // 2 调用小程序内置的api，调起微信支付
+        await uni.requestPayment(result.result)
+        // 这一行代码等同于上面的代码 来模拟支付成功
+        // await getPayMock(this.order.id);
+        // 3 弹出提示，稍等一会，跳转到 支付成功页面
+        uni.showToast({ title: "支付成功" });
+        // 3 支付失败  弹出提示，等待一会，跳转到 订单列表页面
+        setTimeout(() => {
+          uni.navigateTo({ url: "/pages/order/payment" });
+        }, 1000);
+      } catch (error) {
+        uni.showToast({ title: "支付失败", icon: "none" });
+        setTimeout(() => {
+          uni.navigateTo({ url: "/pages/order/create/index" });
+        }, 1000);
+      }
+    },
   },
 };
 </script>

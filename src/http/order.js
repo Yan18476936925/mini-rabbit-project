@@ -20,3 +20,24 @@ export const getMembeOrderById = (id) => {
     url: `/member/order/${id}`,
   });
 };
+
+/**
+ * 传递订单id来获取微信支付参数
+ * @param {String} orderId 订单did
+ */
+export const getPayWxPayMiniPay = (orderId) => {
+  return http({ 
+    url: `/pay/wxPay/miniPay`, 
+    data: { orderId } 
+  });
+};
+/**
+ * 传递订单id来  模拟真正的微信支付
+ * @param {String} orderId 订单did
+ */
+export const getPayMock  = (orderId) => {
+  return http({ 
+    url: `/pay/mock`, 
+    data: { orderId } 
+  });
+};
