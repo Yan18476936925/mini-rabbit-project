@@ -32,10 +32,10 @@
     </scroll-view>
 
     <!-- 底部工具 -->
-    <view class="toobar" v-if="order.orderState === OrderState.DaiFuKuan">
+    <!-- <view class="toobar" v-if="order.orderState === OrderState.DaiFuKuan">
       <view @tap="orderPay" class="primary">去支付</view>
       <view class="default">取消订单</view>
-    </view>
+    </view> -->
   </view>
 </template>
 <script>
@@ -69,26 +69,31 @@ export default {
     // 负责将订单中的 倒计时间  格式化处理 00分00秒
     countdown() {
       // 自己做转换 或者 使用第三方日期库 dayjs
-      return unix(this.order.countdown).format('mm分ss秒');
+      if (this.order) {
+        return unix(this.order.countdown).format("mm分ss秒");
+      }else{
+        return `00分00秒`
+      }
     },
   },
   async onLoad({ id }) {
+    console.log('----->id',id);
     const result = await getMembeOrderById(id);
-    console.log('getMembeOrderById----->75',result);
+    console.log("getMembeOrderById----->75", result);
     this.order = result.result;
-     // 判断一下订单的倒计时  countdown
+    // 判断一下订单的倒计时  countdown
     if (this.order.countdown < 0) {
       // 修改订单的状态  已取消
-      this.order.OrderState = OrderState.YiQuXiao
-    }else{
+      this.order.OrderState = OrderState.YiQuXiao;
+    } else {
       // 开启倒计时
       const timeId = setInterval(() => {
-        this.order.countdown--
-        if (this.order.countdown<0) {
+        this.order.countdown--;
+        if (this.order.countdown < 0) {
           // 停止定时器
-          clearInterval(timeId)
+          clearInterval(timeId);
           // 修改订单的状态  已取消
-          this.order.OrderState= OrderState.YiQuXiao
+          this.order.OrderState = OrderState.YiQuXiao;
         }
       }, 1000);
     }
