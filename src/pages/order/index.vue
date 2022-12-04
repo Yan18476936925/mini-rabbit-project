@@ -130,10 +130,14 @@ export default {
     },
      // 轮播组件切换事件
     swiperChange(e){
+      // 发现当前orderList 对应的下标的元素还没有数据才发送请求
       // 1 设置 activeIndex 下标
       this.activeIndex = e.detail.current;
-      // 2 发送请求 获取数据
-      this.loadGetMemberOrder()
+      // 没有数据 才发请求
+      if (!this.orderList[this.activeIndex]) {
+        // 2 发送请求 获取数据
+        this.loadGetMemberOrder()
+      }
     }
   },
 };
