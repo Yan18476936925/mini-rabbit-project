@@ -8,13 +8,20 @@
 // uni.request({ url: "http://xxxxxxx" }); // url 是完整，所以不需要拼接
 // uni.request({ url: "/home/oneStop/mutli", header: { a: 1, b: 2 } }); // url 是不完整的，所以就需要拼接
 import store from "@/store";
+
+// 定义全局 延时器 id
+let timeId;
 // 1 基础地址
 const baseURL = "https://pcapi-xiaotuxian-front-devtest.itheima.net";
 // 2 来自于 uniapp的官网
 const request = {
   // 发送前
   invoke(args) {
-    uni.showLoading({ title: "加载中" }); // 显示加载中
+    // 清除延时器
+    clearTimeout(timeId)
+    timeId = setTimeout(() => {
+      uni.showLoading({ title: "加载中" }); // 显示加载中
+    }, 500);
     // startsWith是一个字符串方法 判断当前的字符串 是不是以 xxx开头
     if (!args.url.startsWith("http")) {
       // 不是的话 才去拼接基地址
@@ -32,6 +39,7 @@ const request = {
   },
   // 完成后
   complete(res) {
+    clearTimeout(timeId)
     uni.hideLoading(); // 关闭加载中
   },
 };
