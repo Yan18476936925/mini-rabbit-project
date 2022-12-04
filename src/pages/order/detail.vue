@@ -172,12 +172,13 @@ export default {
     async orderPay() {
       try {
         // 1 把订单编号 发送给后端，获取 微信支付相关的参数
-        const result = await getPayWxPayMiniPay(this.order.id);
-        console.log('171----->getPayWxPayMiniPay', result);
-        // // 2 调用小程序内置的api，调起微信支付
-        await uni.requestPayment(result.result)
+        // const result = await getPayWxPayMiniPay(this.order.id);
+        // console.log('171----->getPayWxPayMiniPay', result);
+        // // // 2 调用小程序内置的api，调起微信支付
+        // await uni.requestPayment(result.result)
+        
         // 这一行代码等同于上面的代码 来模拟支付成功
-        // await getPayMock(this.order.id);
+        await getPayMock(this.order.id);
         // 3 弹出提示，稍等一会，跳转到 支付成功页面
         uni.showToast({ title: "支付成功" });
         // 3 支付失败  弹出提示，等待一会，跳转到 订单列表页面

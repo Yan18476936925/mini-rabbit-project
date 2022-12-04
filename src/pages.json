@@ -74,6 +74,13 @@
       }
     },
     {
+      "path": "pages/order/payment",
+      "style": {
+        "navigationStyle": "custom",
+        "navigationBarTextStyle": "white"
+      }
+    },
+    {
       "path": "pages/test/index",
       "style": {
         "navigationBarTitleText": "测试"
