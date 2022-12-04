@@ -27,7 +27,6 @@
         </template>
       </view>
       <!-- 商品信息 -->
-      <!-- 商品信息 -->
       <view class="goods">
         <view class="item">
           <navigator
@@ -165,27 +164,25 @@ export default {
     }
   },
   methods: {
-    onTap() {
-      uni.navigateBack();
-    },
     // 点击去支付
     async orderPay() {
       try {
-        // 1 把订单编号 发送给后端，获取 微信支付相关的参数
+        // // 1 把订单编号 发送给后端，获取 微信支付相关的参数
         // const result = await getPayWxPayMiniPay(this.order.id);
         // console.log('171----->getPayWxPayMiniPay', result);
-        // 2 调用小程序内置的api，调起微信支付
+        // // 2 调用小程序内置的api，调起微信支付
         // await uni.requestPayment(result.result)
 
         // 这一行代码等同于上面的代码 来模拟支付成功
         await getPayMock(this.order.id);
-        // 3 弹出提示，稍等一会，跳转到 支付成功页面
+
+        // 3 弹出提示，稍等一会，跳转到支付成功页面
         uni.showToast({ title: "支付成功" });
-        // 3 支付失败  弹出提示，等待一会，跳转到 订单列表页面
         setTimeout(() => {
           uni.navigateTo({ url: "/pages/order/payment" });
         }, 1000);
       } catch (error) {
+        // 支付失败 弹出提示，等待一会，跳转到订单列表页面
         uni.showToast({ title: "支付失败", icon: "none" });
         setTimeout(() => {
           uni.navigateTo({ url: "/pages/order/index" });
