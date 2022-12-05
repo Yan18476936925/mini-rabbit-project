@@ -52,3 +52,14 @@ export const getMemberOrder = (data) => {
     data,
   });
 };
+
+/**
+ * 获取立即购买的参数
+ * @param {Object} data 立即购买参数  skuId count addressId
+ */
+export const getMembeOrderPreNow = (data) => {
+  return http({ 
+    url: '/member/order/pre/now', 
+    data 
+  });
+};

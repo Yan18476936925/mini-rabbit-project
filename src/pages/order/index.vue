@@ -110,37 +110,37 @@ export default {
     currentOrder() {},
   },
   onLoad(options) {
-    this.loadGetMemberOrder()
+    this.loadGetMemberOrder();
   },
   methods: {
     // 加载订单数据  给orderList 第一次 赋值的时候使用
     // 根据当前选中的下标 来切换 要操作的对象
-    async loadGetMemberOrder(){
+    async loadGetMemberOrder() {
       const data = {
         page: 1,
         pageSize: 6,
         // orderState: OrderState.QuanBu, // 全部
         orderState: this.orderTabs[this.activeIndex].orderState,
-      }
+      };
       const result = await getMemberOrder(data);
-      console.log('120----->getMemberOrder', result);
+      console.log("120----->getMemberOrder", result);
       // 把数据 设置到  orderList 中
       // this.orderList[0] = result.result
-      this.$set(this.orderList,this.activeIndex,result.result)
+      this.$set(this.orderList, this.activeIndex, result.result);
     },
-     // 轮播组件切换事件
-    swiperChange(e){
+    // 轮播组件切换事件
+    swiperChange(e) {
       // 发现当前orderList 对应的下标的元素还没有数据才发送请求
       // 1 设置 activeIndex 下标
       this.activeIndex = e.detail.current;
       // 没有数据 才发请求
       if (!this.orderList[this.activeIndex]) {
         // 2 发送请求 获取数据
-        this.loadGetMemberOrder()
+        this.loadGetMemberOrder();
       }
     },
     // 分页的事件
-    async onScrolltolower(){
+    async onScrolltolower() {
       /*
       1 先判断一下有没有下一页数据
       2 没有 弹出提示
@@ -153,7 +153,7 @@ export default {
       const { page, pages } = this.orderList[this.activeIndex]; // 判断有没有下一页
       if (page >= pages) {
         return uni.showToast({ title: "没有更多数据", icon: "none" });
-      } else{
+      } else {
         // 还有下一页数据
         const data = {
           page: page + 1,
@@ -171,7 +171,7 @@ export default {
           ...result.result.items,
         ];
       }
-    }
+    },
   },
 };
 </script>

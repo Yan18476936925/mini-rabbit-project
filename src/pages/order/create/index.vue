@@ -113,7 +113,7 @@
 
 <script>
 import { mapState } from "vuex";
-import { getMembeOrderPre,postMembeOrder } from "@/http/order.js";
+import { getMembeOrderPre,postMembeOrder, getMembeOrderPreNow } from "@/http/order.js";
 export default {
   computed: {
     ...mapState("address", ["selectedAddress"]),
@@ -152,10 +152,32 @@ export default {
       buyerMessage: "",
     };
   },
+  // onShow 不像onLoad 无法在函数参数中获取到 url的参数
+  // 如何在 onShow中获取 页面参数
   async onShow() {
-    const result = await getMembeOrderPre();
-    console.log('----->99',getMembeOrderPre);
-    this.orderPre = result.result;
+    // 1 获取 所有打开的页面记录  getCurrentPages 是小程序中内置的 也是全局
+    const pages = getCurrentPages();
+    // 2 获取当前的页面 对象
+    const page = pages[pages.length - 1]
+    // 3 获取 页面url参数
+    const {options} = page
+    // 4 获取 skuId 和 count
+    const {skuId,count} = options
+    // 5 判断 skuId 有没有值
+    if (skuId) {
+      // 来自于立即购买 用接口1
+      const result = await getMembeOrderPreNow({
+        skuId,
+        count,
+        addressId: this.selectedAddress.id,
+      });
+      this.orderPre = result.result
+    }else{
+      // 来自于购物车 用接口2
+      const result = await getMembeOrderPre();
+      console.log('----->99',getMembeOrderPre);
+      this.orderPre = result.result;
+    }
   },
   methods: {
     async submitForm(){

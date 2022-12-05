@@ -371,7 +371,16 @@ export default {
       // uni.navigateTo({ url: "/pages/cart/index" });
       uni.switchTab({ url: "/pages/cart/index" }); // 跳转到 tabbar页面
     },
-    onBuyNow() {},
+    // 点击 sku组件里面的 立即购买
+    onBuyNow(e) {
+      console.log('----->e',e);
+      const {buy_num,_id} = e
+      // 关闭 sku组件
+      this.isShowSku = false
+      uni.navigateTo({
+        url: `/pages/order/create/index?skuId=${_id}&count=${buy_num}`,
+      });
+    },
   },
 };
 </script>
