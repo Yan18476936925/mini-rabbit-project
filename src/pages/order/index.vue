@@ -138,6 +138,39 @@ export default {
         // 2 发送请求 获取数据
         this.loadGetMemberOrder()
       }
+    },
+    // 分页的事件
+    async onScrolltolower(){
+      /*
+      1 先判断一下有没有下一页数据
+      2 没有 弹出提示
+      3 有
+        1 页码 + 1
+        2 重新发送请求
+        3 数据回来， 把新旧数据 合并
+      */
+      // 获取 当前页码和总页数
+      const { page, pages } = this.orderList[this.activeIndex]; // 判断有没有下一页
+      if (page >= pages) {
+        return uni.showToast({ title: "没有更多数据", icon: "none" });
+      } else{
+        // 还有下一页数据
+        const data = {
+          page: page + 1,
+          pageSize: 6,
+          orderState: this.orderTabs[this.activeIndex].orderState,
+        };
+        // 发送请求
+        const result = await getMemberOrder(data);
+        // 数据回来了 需要做合并！！
+        // 对 旧数据page做修改
+        this.orderList[this.activeIndex].page = result.result.page;
+        // 对 旧数据 items 合并 新旧数组的合并
+        this.orderList[this.activeIndex].items = [
+          ...this.orderList[this.activeIndex].items,
+          ...result.result.items,
+        ];
+      }
     }
   },
 };

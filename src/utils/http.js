@@ -71,7 +71,7 @@ export default (options) => {
       },
       fail(err) {
         // 失败
-        reject(res);
+        reject(err);
       },
     });
   });
