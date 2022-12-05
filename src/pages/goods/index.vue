@@ -252,12 +252,12 @@
   </view>
 </template>
 <script>
-import { addMemberCart } from "@/http/cart.js";
-import { getGoodsById, getGoodsRelevant } from "@/http/goods.js";
-import Sku from "./components/Sku/index.vue";
-import Shipment from "./components/Shipment/index.vue";
-import Clause from "./components/Clause/index.vue";
-import Helps from "./components/Helps/index.vue";
+import { addMemberCart } from '@/http/cart.js';
+import { getGoodsById, getGoodsRelevant } from '@/http/goods.js';
+import Sku from './components/Sku/index.vue';
+import Shipment from './components/Shipment/index.vue';
+import Clause from './components/Clause/index.vue';
+import Helps from './components/Helps/index.vue';
 export default {
   components: {
     Sku,
@@ -274,14 +274,14 @@ export default {
       // 轮播图下标
       current: 0,
       // 弹出层显示的组件名称
-      layer: "Sku",
+      layer: 'Sku',
       // 是否显示SKU组件
       isShowSku: false,
       // SKU组件的属性
       skuMode: 1,
       // SKU 商品数据
       goodsSku: null,
-      selectArrText: "请选择商品规格",
+      selectArrText: '请选择商品规格',
     };
   },
   onLoad({ id }) {
@@ -325,7 +325,7 @@ export default {
     });
     // 获取同类推荐
     getGoodsRelevant({ id }).then((result) => {
-      console.log("198----->getGoodsRelevant", result);
+      console.log('198----->getGoodsRelevant', result);
       this.goodsRelevants = result.result;
     });
   },
@@ -353,30 +353,30 @@ export default {
     async onAddCart(selectShop) {
       // console.log("----->skuRef", this.$refs.skuRef);
       // console.log("----->selectShop", selectShop);
-      this.selectArrText = selectShop.sku_name_arr.join(" ");
+      this.selectArrText = selectShop.sku_name_arr.join(' ');
       this.isShowSku = false;
       // 把 商品 添加到 购物车上    -  调用接口来添加商品到购物车
       const data = {
-        skuId:selectShop._id,
-        count:selectShop.buy_num
-      }
+        skuId: selectShop._id,
+        count: selectShop.buy_num,
+      };
       // 调用添加接口实现添加
       const result = await addMemberCart(data);
       console.log('363----->addMemberCart', result);
-      uni.showToast({ title: "加入购物车成功" })
+      uni.showToast({ title: '加入购物车成功' });
     },
     // 跳转到购物车
-    goCart(){
+    goCart() {
       // 原生微信小程序 导航标签 跳转的页面  根据页面 tabbar类型 设置open-type
       // uni.navigateTo({ url: "/pages/cart/index" });
-      uni.switchTab({ url: "/pages/cart/index" }); // 跳转到 tabbar页面
+      uni.switchTab({ url: '/pages/cart/index' }); // 跳转到 tabbar页面
     },
     // 点击 sku组件里面的 立即购买
     onBuyNow(e) {
-      console.log('----->e',e);
-      const {buy_num,_id} = e
+      console.log('----->e', e);
+      const { buy_num, _id } = e;
       // 关闭 sku组件
-      this.isShowSku = false
+      this.isShowSku = false;
       uni.navigateTo({
         url: `/pages/order/create/index?skuId=${_id}&count=${buy_num}`,
       });
@@ -450,7 +450,7 @@ page {
       color: #27ba9b;
       font-weight: 500;
       &::after {
-        content: "";
+        content: '';
         position: absolute;
         left: 18rpx;
         right: 20rpx;
@@ -494,9 +494,9 @@ page {
     position: absolute;
     top: 50%;
     right: 30rpx;
-    content: "\e6c2";
+    content: '\e6c2';
     color: #ccc;
-    font-family: "erabbit" !important;
+    font-family: 'erabbit' !important;
     font-size: 32rpx;
     transform: translateY(-50%);
   }
@@ -680,7 +680,7 @@ page {
     }
     .active {
       &::after {
-        content: "";
+        content: '';
         display: block;
         width: 60rpx;
         height: 4rpx;

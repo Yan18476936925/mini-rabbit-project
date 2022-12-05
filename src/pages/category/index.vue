@@ -60,13 +60,13 @@
 </template>
 
 <script>
-import { getCategoryTop } from "@/http/category.js";
-import { getHomeBanner } from "@/http/home.js";
+import { getCategoryTop } from '@/http/category.js';
+import { getHomeBanner } from '@/http/home.js';
 // 引入骨架屏组件
-import skeleton from "./skeleton/index.vue";
+import skeleton from './skeleton/index.vue';
 export default {
   components: {
-    skeleton
+    skeleton,
   },
   data() {
     return {
@@ -83,19 +83,19 @@ export default {
       if (this.categoryTop.length) {
         return this.categoryTop[this.activeIndex].children;
       }
-      return []
+      return [];
     },
   },
   async onLoad() {
     // 获取一级分类
     const result = await getCategoryTop();
-    console.log("40----->getCategoryTop", result);
+    console.log('40----->getCategoryTop', result);
     this.categoryTop = result.result;
     // 获取轮播图
     const result2 = await getHomeBanner(2);
-    console.log("50----->getHomeBanner", result2);
+    console.log('50----->getHomeBanner', result2);
     this.banners = result2.result;
-  }
+  },
 };
 </script>
 
@@ -152,7 +152,7 @@ page {
       position: absolute;
       left: 42rpx;
       bottom: 0;
-      content: "";
+      content: '';
       width: 96rpx;
       border-top: 1rpx solid #e3e4e7;
     }
@@ -163,7 +163,7 @@ page {
       position: absolute;
       left: 0;
       top: 0;
-      content: "";
+      content: '';
       width: 8rpx;
       height: 100%;
       background-color: #27ba9b;
@@ -201,8 +201,8 @@ page {
   }
   .more {
     &::after {
-      font-family: "erabbit" !important;
-      content: "\e6c2";
+      font-family: 'erabbit' !important;
+      content: '\e6c2';
     }
   }
   .section {
