@@ -224,7 +224,7 @@ export default {
       */
       const [err, { confirm }] = await uni.showModal({
         title: "警告",
-        content: "您确定删除吗",
+        content: "您确定删除吗"
       });
       if (confirm) {
         const ids = [skuId];

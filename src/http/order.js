@@ -52,21 +52,3 @@ export const getMemberOrder = (data) => {
     data,
   });
 };
-
-/**
- * 删除购物车
- * @param {Object} data 删除购物车的 参数 ids-skuId集合 clearAll-是否情况-默认false  clearInvalid-清空无效商品
- */
-export const deleteMemberCart = (data) => {
-  return http({ 
-    url: `/member/cart`, 
-    method: 'delete', 
-    data
-  });
-};
-// export const deleteMemberCart = (ids) => {
-//   return http({ 
-//     url: `/member/cart/${ids}`, 
-//     method: 'delete'
-//   });
-// };
