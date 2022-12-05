@@ -111,6 +111,7 @@ import {
   getMemberCart,
   putMemberCart,
   putMemberCartSelected,
+  deleteMemberCart,
 } from "@/http/cart";
 export default {
   computed: {
@@ -208,12 +209,34 @@ export default {
       this.loadData();
     },
     // 去结算
-    goToOrderCreate(){
+    goToOrderCreate() {
       if (this.selectedCartsCount === 0) {
-        return uni.showToast({title:"请选择下单商品",icon:"none"})
+        return uni.showToast({ title: "请选择下单商品", icon: "none" });
       }
-      uni.navigateTo({url:'/pages/order/create/index'})
-    }
+      uni.navigateTo({ url: "/pages/order/create/index" });
+    },
+    // 删除购物车商品
+    async deleteCart(skuId) {
+      /* 
+        1 先弹出模态对话框 问用户是否要删除
+        2 是，调接口 完成删除
+        3 删除完成后 获取新数据  更新页面
+      */
+      const [err, { confirm }] = await uni.showModal({
+        title: "警告",
+        content: "您确定删除吗",
+      });
+      if (confirm) {
+        const ids = [skuId];
+        // 删除数据
+        const result = await deleteMemberCart({ ids });
+        console.log("删除----->deleteMemberCart", result);
+        // 更新数据
+        this.loadData();
+      } else {
+        console.log("----->取消删除");
+      }
+    },
   },
 };
 </script>

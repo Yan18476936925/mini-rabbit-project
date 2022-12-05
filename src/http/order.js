@@ -47,5 +47,26 @@ export const getPayMock = (orderId) => {
  * @param {Object} data page-页码 pageSize-页容量 orderState - 订单状态，0全部订单 1为待付款、2为待发货、3为待收货、4为待评价、5为已完成、6为已取消
  */
 export const getMemberOrder = (data) => {
-  return http({ url: `/member/order`, data });
+  return http({
+    url: `/member/order`,
+    data,
+  });
 };
+
+/**
+ * 删除购物车
+ * @param {Object} data 删除购物车的 参数 ids-skuId集合 clearAll-是否情况-默认false  clearInvalid-清空无效商品
+ */
+export const deleteMemberCart = (data) => {
+  return http({ 
+    url: `/member/cart`, 
+    method: 'delete', 
+    data
+  });
+};
+// export const deleteMemberCart = (ids) => {
+//   return http({ 
+//     url: `/member/cart/${ids}`, 
+//     method: 'delete'
+//   });
+// };
