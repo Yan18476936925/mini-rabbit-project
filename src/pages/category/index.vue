@@ -1,5 +1,5 @@
 <template>
-  <view class="viewport">
+  <view class="viewport" v-if="banners.length">
     <!-- 搜索框 -->
     <view class="search">
       <view class="input">
@@ -54,12 +54,20 @@
       </scroll-view>
     </view>
   </view>
+  <view v-else>
+    <skeleton></skeleton>
+  </view>
 </template>
 
 <script>
 import { getCategoryTop } from "@/http/category.js";
 import { getHomeBanner } from "@/http/home.js";
+// 引入骨架屏组件
+import skeleton from "./skeleton/index.vue";
 export default {
+  components: {
+    skeleton
+  },
   data() {
     return {
       // 分类数据
