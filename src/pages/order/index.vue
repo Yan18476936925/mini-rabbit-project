@@ -69,8 +69,8 @@
 </template>
 
 <script>
-import { getMemberOrder } from "@/http/order.js";
-import { OrderState } from "./OrderConstance.js";
+import { getMemberOrder } from '@/http/order.js';
+import { OrderState } from './OrderConstance.js';
 export default {
   data() {
     return {
@@ -80,23 +80,23 @@ export default {
       orderTabs: [
         {
           orderState: 0,
-          title: "全部",
+          title: '全部',
         },
         {
           orderState: 1,
-          title: "待付款",
+          title: '待付款',
         },
         {
           orderState: 2,
-          title: "待发货",
+          title: '待发货',
         },
         {
           orderState: 3,
-          title: "待收货",
+          title: '待收货',
         },
         {
           orderState: 4,
-          title: "待评价",
+          title: '待评价',
         },
       ],
       // 当前选中的订单状态
@@ -123,7 +123,7 @@ export default {
         orderState: this.orderTabs[this.activeIndex].orderState,
       };
       const result = await getMemberOrder(data);
-      console.log("120----->getMemberOrder", result);
+      console.log('120----->getMemberOrder', result);
       // 把数据 设置到  orderList 中
       // this.orderList[0] = result.result
       this.$set(this.orderList, this.activeIndex, result.result);
@@ -152,7 +152,7 @@ export default {
       // 获取 当前页码和总页数
       const { page, pages } = this.orderList[this.activeIndex]; // 判断有没有下一页
       if (page >= pages) {
-        return uni.showToast({ title: "没有更多数据", icon: "none" });
+        return uni.showToast({ title: '没有更多数据', icon: 'none' });
       } else {
         // 还有下一页数据
         const data = {
@@ -207,7 +207,7 @@ page {
     left: 0;
     bottom: 20rpx;
     display: block;
-    content: "";
+    content: '';
     width: 20%;
     height: 4rpx;
     padding: 0 50rpx;
