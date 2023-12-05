@@ -10,7 +10,11 @@
         <text class="icon icon-phone"></text>
         手机号快捷登录
       </button> -->
-      <button class="button phone" open-type="getPhoneNumber" @getphonenumber="handleGetPhoneNumber2" >
+      <button
+        class="button phone"
+        open-type="getPhoneNumber"
+        @getphonenumber="handleGetPhoneNumber2"
+      >
         <text class="icon icon-phone"></text>
         手机号快捷登录
       </button>
@@ -50,7 +54,7 @@
     2 返回上一页即可 
 */
 // import { addLoginWxmin,addLoginWxminSimple } from "@/http/login.js";
-import { mapActions } from "vuex";
+import { mapActions } from 'vuex';
 export default {
   async onLoad() {
     // uni.login 是 uni-api
@@ -58,8 +62,8 @@ export default {
     // 2 如果 它 存在 返回值，该返回值格式 数组
     //    [错误信息,返回值]
     // code 是微信小程序提供 的5分钟 有效期 临时凭据 作用：为了向我们的后端 获取token
-    const [err,{code}] = await uni.login();
-    this.code = code
+    const [err, { code }] = await uni.login();
+    this.code = code;
   },
   methods: {
     // 获取手机号码的事件回调函数
@@ -70,20 +74,20 @@ export default {
     //     iv,
     //     code:this.code
     //   });
-    //   console.log('74----->addLoginWxmin', result);
+    //   console.log('addLoginWxmin----->', result);
     // },
-    ...mapActions("user",["fetchProfile","fetchMemberProfile"]),
+    ...mapActions('user', ['fetchProfile', 'fetchMemberProfile']),
     // 获取手机号码的事件回调函数
-    async handleGetPhoneNumber2(){
+    async handleGetPhoneNumber2() {
       await this.fetchProfile({
         phoneNumber: 18476936925,
-      })
-      await this.fetchMemberProfile()
-      uni.showToast({title:"登录成功"})
+      });
+      await this.fetchMemberProfile();
+      uni.showToast({ title: '登录成功' });
       setTimeout(() => {
-        uni.navigateBack()
+        uni.navigateBack();
       }, 1000);
-    }
+    },
   },
 };
 </script>

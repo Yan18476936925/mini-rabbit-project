@@ -7,47 +7,47 @@
  */
 // uni.request({ url: "http://xxxxxxx" }); // url 是完整，所以不需要拼接
 // uni.request({ url: "/home/oneStop/mutli", header: { a: 1, b: 2 } }); // url 是不完整的，所以就需要拼接
-import store from "@/store";
+import store from '@/store';
 
 // 定义全局 延时器 id
 let timeId;
 // 1 基础地址
-const baseURL = "https://pcapi-xiaotuxian-front-devtest.itheima.net";
+const baseURL = 'https://pcapi-xiaotuxian-front-devtest.itheima.net';
 // 2 来自于 uniapp的官网
 const request = {
   // 发送前
   invoke(args) {
     // 清除延时器
-    clearTimeout(timeId)
+    clearTimeout(timeId);
     timeId = setTimeout(() => {
-      uni.showLoading({ title: "加载中" }); // 显示加载中
+      uni.showLoading({ title: '加载中' }); // 显示加载中
     }, 500);
     // startsWith是一个字符串方法 判断当前的字符串 是不是以 xxx开头
-    if (!args.url.startsWith("http")) {
+    if (!args.url.startsWith('http')) {
       // 不是的话 才去拼接基地址
       args.url = baseURL + args.url;
     }
     // 请求头
     args.header = {
       ...args.header, // 保留原本的header
-      "source-client": "miniapp", // 添加小程序端调用标识--给后端判断使用！！
+      'source-client': 'miniapp', // 添加小程序端调用标识--给后端判断使用！！
     };
     // 判断一下有没有token 有 就携带
     if (store.state.user.profile) {
-      args.header.Authorization = store.state.user.profile.token
+      args.header.Authorization = store.state.user.profile.token;
     }
   },
   // 完成后
   complete(res) {
-    clearTimeout(timeId)
+    clearTimeout(timeId);
     uni.hideLoading(); // 关闭加载中
   },
 };
-uni.addInterceptor("request", request); // 拦截发送请求
-uni.addInterceptor("uploadFile", request); // 拦截上传文件
+uni.addInterceptor('request', request); // 拦截发送请求
+uni.addInterceptor('uploadFile', request); // 拦截上传文件
 
 // 自己针对 uni.request 再次做了的封装
-export default (options) => {
+const http = (options) => {
   return new Promise((resolve, reject) => {
     // 封装自己的发送请求的代码 底层还是使用uni.request => 继续使用刚刚封装好的拦截器
     uni.request({
@@ -63,7 +63,7 @@ export default (options) => {
         } else {
           if (res.statusCode === 401) {
             // 跳转回登录页面
-            uni.navigateTo({ url:"/pages/login/index"});
+            uni.navigateTo({ url: '/pages/login/index' });
           }
           // 失败
           reject(res);
@@ -76,3 +76,35 @@ export default (options) => {
     });
   });
 };
+export default http;
+
+// // 自己针对 uni.request 再次做了的封装
+// export default (options) => {
+//   return new Promise((resolve, reject) => {
+//     // 封装自己的发送请求的代码 底层还是使用uni.request => 继续使用刚刚封装好的拦截器
+//     uni.request({
+//       ...options,
+//       // url,data,header,
+//       //通过success的方式获取返回值 是本来 原生的小程序 的request就支持，uni.request 也是支持
+//       success(res) {
+//         // 请求成功了 判断一下 http状态码 满足 200~300 表示成功
+//         // 否则401 303 500 都理解成是错误
+//         if (res.statusCode >= 200 && res.statusCode < 300) {
+//           // 成功 resolve把请求后的参数返回
+//           resolve(res.data);
+//         } else {
+//           if (res.statusCode === 401) {
+//             // 跳转回登录页面
+//             uni.navigateTo({ url: '/pages/login/index' });
+//           }
+//           // 失败
+//           reject(res);
+//         }
+//       },
+//       fail(err) {
+//         // 失败
+//         reject(err);
+//       },
+//     });
+//   });
+// };
