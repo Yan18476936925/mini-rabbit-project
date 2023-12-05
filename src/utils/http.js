@@ -47,7 +47,7 @@ uni.addInterceptor('request', request); // 拦截发送请求
 uni.addInterceptor('uploadFile', request); // 拦截上传文件
 
 // 自己针对 uni.request 再次做了的封装
-const http = (options) => {
+export default (options) => {
   return new Promise((resolve, reject) => {
     // 封装自己的发送请求的代码 底层还是使用uni.request => 继续使用刚刚封装好的拦截器
     uni.request({
@@ -76,35 +76,3 @@ const http = (options) => {
     });
   });
 };
-export default http;
-
-// // 自己针对 uni.request 再次做了的封装
-// export default (options) => {
-//   return new Promise((resolve, reject) => {
-//     // 封装自己的发送请求的代码 底层还是使用uni.request => 继续使用刚刚封装好的拦截器
-//     uni.request({
-//       ...options,
-//       // url,data,header,
-//       //通过success的方式获取返回值 是本来 原生的小程序 的request就支持，uni.request 也是支持
-//       success(res) {
-//         // 请求成功了 判断一下 http状态码 满足 200~300 表示成功
-//         // 否则401 303 500 都理解成是错误
-//         if (res.statusCode >= 200 && res.statusCode < 300) {
-//           // 成功 resolve把请求后的参数返回
-//           resolve(res.data);
-//         } else {
-//           if (res.statusCode === 401) {
-//             // 跳转回登录页面
-//             uni.navigateTo({ url: '/pages/login/index' });
-//           }
-//           // 失败
-//           reject(res);
-//         }
-//       },
-//       fail(err) {
-//         // 失败
-//         reject(err);
-//       },
-//     });
-//   });
-// };
