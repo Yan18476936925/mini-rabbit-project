@@ -106,16 +106,16 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex';
 import {
   getMemberCart,
   putMemberCart,
   putMemberCartSelected,
   deleteMemberCart,
-} from "@/http/cart";
+} from '@/http/cart';
 export default {
   computed: {
-    ...mapState("user", ["profile"]),
+    ...mapState('user', ['profile']),
     // 勾选了的购物车数组
     selectedCarts() {
       return this.carts.filter((item) => item.selected);
@@ -184,11 +184,11 @@ export default {
       count += unit;
       // 判断
       if (count < 1) {
-        uni.showToast({ title: "数量不少于1", icon: "none" });
+        uni.showToast({ title: '数量不少于1', icon: 'none' });
         return;
       }
       if (count > stock) {
-        uni.showToast({ title: "库存不足", icon: "none" });
+        uni.showToast({ title: '库存不足', icon: 'none' });
         return;
       }
       // 拼接参数 发送给后端
@@ -211,9 +211,9 @@ export default {
     // 去结算
     goToOrderCreate() {
       if (this.selectedCartsCount === 0) {
-        return uni.showToast({ title: "请选择下单商品", icon: "none" });
+        return uni.showToast({ title: '请选择下单商品', icon: 'none' });
       }
-      uni.navigateTo({ url: "/pages/order/create/index" });
+      uni.navigateTo({ url: '/pages/order/create/index' });
     },
     // 删除购物车商品
     async deleteCart(skuId) {
@@ -223,18 +223,18 @@ export default {
         3 删除完成后 获取新数据  更新页面
       */
       const [err, { confirm }] = await uni.showModal({
-        title: "警告",
-        content: "您确定删除吗"
+        title: '警告',
+        content: '您确定删除吗',
       });
       if (confirm) {
         const ids = [skuId];
         // 删除数据
         const result = await deleteMemberCart({ ids });
-        console.log("删除----->deleteMemberCart", result);
+        console.log('删除----->deleteMemberCart', result);
         // 更新数据
         this.loadData();
       } else {
-        console.log("----->取消删除");
+        console.log('----->取消删除');
       }
     },
   },
@@ -293,7 +293,7 @@ page {
 .topbar .extra .menu::after {
   position: absolute;
   top: 50%;
-  content: "";
+  content: '';
   width: 6rpx;
   height: 4rpx;
   background-color: #8c8c8c;
@@ -441,8 +441,8 @@ page {
     font-size: 14px;
     color: #444;
     &::before {
-      font-family: "erabbit" !important;
-      content: "\e6cd";
+      font-family: 'erabbit' !important;
+      content: '\e6cd';
       font-size: 36rpx;
       margin-right: 8rpx;
       vertical-align: -4rpx;
@@ -450,7 +450,7 @@ page {
   }
   .checked {
     &::before {
-      content: "\e6cc";
+      content: '\e6cc';
       color: #27ba9b;
     }
   }
@@ -465,7 +465,7 @@ page {
     color: #cf4444;
     vertical-align: -1px;
     &::before {
-      content: "￥";
+      content: '￥';
       font-size: 12px;
     }
     .decimal {

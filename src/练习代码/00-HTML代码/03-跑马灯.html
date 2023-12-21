@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .marquee {
+      width: 200px;
+      /* 跑马灯容器的宽度 */
+      height: 20px;
+      /* 跑马灯容器的高度 */
+      overflow: hidden;
+      /* 隐藏超出容器范围的内容 */
+      border: 1px solid #000;
+      position: relative;
+      /* 可选：添加边框样式 */
+    }
+
+    .marquee span {
+      /* 将内容作为内联块级元素显示 */
+      position: absolute;
+      top: 0;
+      right: -100%;
+      animation: marquee 5s linear infinite;
+      /* 应用动画效果 */
+      display: flex;
+      height: 100%;
+    }
+
+    .marquee .a {
+      /* 将内容作为内联块级元素显示 */
+      position: absolute;
+      top: 0;
+      left: -100%;
+      animation: b 5s linear infinite;
+      /* 应用动画效果 */
+      display: flex;
+      height: 100%;
+    }
+
+    .marquee span div {
+      width: 20px;
+      height: 100%;
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      /* 初始位置 */
+      100% {
+        transform: translateX(-200px);
+      }
+
+      /* 终止位置，根据实际情况调整偏移量 */
+    }
+
+    @keyframes b {
+      0% {
+        transform: translateX(0);
+      }
+
+      /* 初始位置 */
+      100% {
+        transform: translateX(200px);
+      }
+
+      /* 终止位置，根据实际情况调整偏移量 */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="marquee">
+    <span>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: yellow;"></div>
+      <div style="background-color: skyblue;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: yellow;"></div>
+      <div style="background-color: skyblue;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: yellow;"></div>
+      <div style="background-color: skyblue;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: yellow;"></div>
+      <div style="background-color: skyblue;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+    </span>
+  </div>
+  <div class="marquee">
+    <span class="a">
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: yellow;"></div>
+      <div style="background-color: skyblue;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: yellow;"></div>
+      <div style="background-color: skyblue;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: yellow;"></div>
+      <div style="background-color: skyblue;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+      <div style="background-color: yellow;"></div>
+      <div style="background-color: skyblue;"></div>
+      <div style="background-color: aqua;"></div>
+      <div style="background-color: red;"></div>
+    </span>
+  </div>
+</body>
+
+</html>

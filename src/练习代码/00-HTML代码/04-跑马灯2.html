@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    .marquee {
+      width: 100%;
+      /* 跑马灯容器的宽度 */
+      overflow: hidden;
+      white-space: nowrap;
+      position: relative;
+    }
+
+    .marquee-content {
+      display: inline-block;
+      animation: marquee 10s linear infinite;
+      /* 设置动画 */
+    }
+
+    @keyframes marquee {
+      0% {
+        transform: translateX(0);
+      }
+
+      100% {
+        transform: translateX(-100%);
+      }
+    }
+
+    /* 这里的样式可以根据需要进行调整 */
+    span {
+      margin-right: 20px;
+      font-size: 18px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="marquee">
+    <div class="marquee-content">
+      <!-- 内容循环 -->
+      <span>内容 1</span>
+      <span>内容 2</span>
+      <span>内容 3</span>
+      <!-- 可以根据需要添加更多内容 -->
+    </div>
+  </div>
+</body>
+
+</html>
